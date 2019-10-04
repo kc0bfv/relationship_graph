@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <script type="text/javascript" src="project_properties.js"></script>
+    <script type="text/javascript" src="cytoscape.min.js"></script>
+    <script type="text/javascript" src="nodes_links.js"></script>
+    <style>
+      div {
+        margin: 2px;
+      }
+
+      .node_list_node {
+        border: 2px black solid;
+      }
+
+      .node_list_selected_node {
+        border: 2px red solid;
+      }
+
+      .node_list_sec_sel_node {
+        border: 2px green solid;
+      }
+
+      pre {
+        white-space: pre-wrap;
+      }
+
+    </style>
+  </head>
+
+  <body onLoad="after_load()">
+    <div id="add_ref_frm">
+    </div>
+    <hr>
+    <div id="nodes_cont">
+    </div>
+    <div>
+      <input type="button" onclick="edit_sel_node()" value="Edit Node">
+      <input type="button" onclick="change_node()" value="Replace Node With Edit Values">
+      <input type="button" onclick="link_node()" value="Link Nodes">
+    </div>
+    <hr>
+    <div id="cytoscape_div" style="height: 800px; display: block">
+    </div>
+    <hr>
+    <div id="json_cont">
+      <label for="json_out">JSON</label><textarea id="json_out" cols="80" rows="20">{"nodes": [], "links": []}</textarea>
+    </div>
+    <div>
+      <input type="button" onclick="update_GUI()" value="Update Display">
+    </div>
+  </body>
+
+</html>

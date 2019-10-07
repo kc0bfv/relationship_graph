@@ -124,6 +124,30 @@ function find_corresponding_json_node_ind(parsed_json, node_id) {
   return sel_elem_ind;
 }
 
+function find_corresponding_json_link_ind(parsed_json, link_id) {
+  // Return the index of the json element corresponding to a link id
+  // Return null if none were found, or if multiple were
+  var json_links = parsed_json["links"];
+  var sel_elem_ind = null;
+  for (var cur_elem_ind = 0; cur_elem_ind < json_links.length;
+        cur_elem_ind += 1)
+  {
+    var cur_elem = json_links[cur_elem_ind];
+
+    // Match on link_id
+    if (cur_elem[link_id_prop_name] == link_id) {
+      if (sel_elem_ind === null) {
+        sel_elem_ind = cur_elem_ind;
+      } else {
+        alert("Multiple matching JSON entries found...  " +
+              "Failing operation.");
+        return null;
+      }
+    }
+  }
+  return sel_elem_ind;
+}
+
 function change_node() {
 
   // Replace the selected node with the edit values entered
@@ -164,6 +188,86 @@ function change_node() {
     cur_json_all, null, 2);
 
   update_GUI();
+}
+
+function delete_node_with_id(node_id) {
+  // Delete one node with provided ID
+
+  // Resolve the json into arrays
+  var cur_json_text = document.getElementById(json_element_id).value;
+  var cur_json_all = JSON.parse(cur_json_text);
+  var cur_json = cur_json_all["nodes"];
+
+  // Find the corresponding JSON element for the selected node
+  var sel_elem_ind = find_corresponding_json_node_ind(
+    cur_json_all, node_id);
+  if (sel_elem_ind === null) {
+    alert("ERROR: unable to find corresponding JSON element " +
+          "for selection...");
+    return;
+  }
+
+  // Remove the node
+  cur_json.splice(sel_elem_ind, 1);
+  cur_json_all["nodes"] = cur_json;
+
+  // Store the json back to JSON element
+  document.getElementById(json_element_id).value = JSON.stringify(
+    cur_json_all, null, 2);
+
+  update_GUI();
+}
+
+function delete_link_with_id(link_id) {
+  // Delete one link with provided ID
+
+  // Resolve the json into arrays
+  var cur_json_text = document.getElementById(json_element_id).value;
+  var cur_json_all = JSON.parse(cur_json_text);
+  var cur_json = cur_json_all["links"];
+
+  // Find the corresponding JSON element for the selected link
+  var sel_elem_ind = find_corresponding_json_link_ind(
+    cur_json_all, link_id);
+  if (sel_elem_ind === null) {
+    alert("ERROR: unable to find corresponding JSON element " +
+          "for selection...");
+    return;
+  }
+
+  // Remove the link
+  cur_json.splice(sel_elem_ind, 1);
+  cur_json_all["links"] = cur_json;
+
+  // Store the json back to JSON element
+  document.getElementById(json_element_id).value = JSON.stringify(
+    cur_json_all, null, 2);
+
+  update_GUI();
+}
+
+function does_node_exist_in_json(node_id) {
+  var cur_json_text = document.getElementById(json_element_id).value;
+  var cur_json_all = JSON.parse(cur_json_text);
+  var cur_json = cur_json_all["nodes"];
+
+  // Find the corresponding JSON element for the selected node
+  var sel_elem_ind = find_corresponding_json_node_ind(
+    cur_json_all, node_id);
+
+  return !(sel_elem_ind === null);
+}
+
+function does_link_exist_in_json(link_id) {
+  var cur_json_text = document.getElementById(json_element_id).value;
+  var cur_json_all = JSON.parse(cur_json_text);
+  var cur_json = cur_json_all["links"];
+
+  // Find the corresponding JSON element for the selected link
+  var sel_elem_ind = find_corresponding_json_link_ind(
+    cur_json_all, link_id);
+
+  return !(sel_elem_ind === null);
 }
 
 function edit_sel_node() {
@@ -312,85 +416,6 @@ function link_node() {
   update_GUI();
 }
 
-global_cy = null;
-function refresh_graph() {
-    var n_pref = "node_id_";
-    var l_pref = "link_id_";
-
-    var cur_json_text = document.getElementById(json_element_id).value;
-    var cur_json = JSON.parse(cur_json_text);
-
-    var elements = [];
-    for(var node_ind = 0; node_ind < cur_json["nodes"].length; node_ind += 1) {
-        var cur_node = cur_json["nodes"][node_ind];
-        var fixed_elem_data = cur_node;
-        fixed_elem_data["id"] = n_pref + fixed_elem_data[node_id_prop_name];
-
-        var node_label = "";
-        for(var node_prop_ind = 0; node_prop_ind < cy_node_display.length;
-                node_prop_ind += 1) {
-            if( node_prop_ind > 0 ) {
-                node_label += "\n";
-            }
-            lookup = cur_node[cy_node_display[node_prop_ind]];
-            if( cy_node_display[node_prop_ind] == node_type_prop[0] ) {
-                lookup = node_type_opts[
-                        cur_node[cy_node_display[node_prop_ind]]
-                    ];
-            }
-            node_label += lookup + " ";
-        }
-
-        fixed_elem_data["label"] = node_label;
-
-        var cur_elem = { 
-            group: "nodes",
-            data: fixed_elem_data,
-            grabbable: true
-        };
-        elements.push(cur_elem);
-    }
-    for(var link_ind = 0; link_ind < cur_json["links"].length; link_ind += 1) {
-        var cur_link = cur_json["links"][link_ind];
-        var fixed_elem_data = cur_link;
-        fixed_elem_data["id"] = l_pref + fixed_elem_data[link_id_prop_name];
-        fixed_elem_data["source"] = n_pref + fixed_elem_data["node_1_id"];
-        fixed_elem_data["target"] = n_pref + fixed_elem_data["node_2_id"];
-        var cur_elem = { 
-            group: "edges",
-            data: fixed_elem_data,
-            grabbable: true
-        };
-        elements.push(cur_elem);
-    }
-    
-    var edge_label_style = "data(" + link_prop_name[0] + ")";
-
-    global_cy = cytoscape({
-        container: document.getElementById(cy_div_id),
-        elements: elements,
-        layout: {
-                name: "cose",
-                fit: true,
-                padding: 20,
-
-            },
-        style: [{
-                selector: "node",
-                style: {"label": "data(label)"}
-            },
-            {
-                selector: "edge",
-                style: {
-                        "label": edge_label_style,
-                        "width": 2,
-                        "curve-style": "straight",
-                        "target-arrow-shape": "triangle"
-                    }
-            }]
-    });
-}
-
 function build_form() {
     var form_div = document.getElementById(entry_form_id);
 
@@ -438,7 +463,7 @@ function build_form() {
 
     var add_button = document.createElement("input");
     add_button.type = "button";
-    add_button.onClick = "add_node()";
+    add_button.onclick = add_node;
     add_button.value = "Add Node";
     div_sec = document.createElement("div");
     div_sec.appendChild(add_button);
@@ -447,4 +472,211 @@ function build_form() {
 
 function after_load() {
     build_form();
+}
+
+
+
+// Cytoscape specific stuff
+var global_cy = null;
+var n_pref = "node_id_";
+var l_pref = "link_id_";
+var layout_opts = {
+        "cose": {
+                name: "cose",
+                fit: true,
+                padding: 20,
+            },
+        "breadthfirst": {
+                name: "breadthfirst",
+                roots: "[id = \"" + n_pref + "0" + "\"]",
+            },
+    }
+
+function get_selected_nodes_and_edges() {
+    selected = global_cy.$(":selected");
+    return selected;
+}
+
+function get_selected_nodes() {
+    var all_seld = get_selected_nodes_and_edges();
+    var nodes_seld = [];
+    for( var ind = 0; ind < all_seld.length; ind += 1 ) {
+        if( all_seld[ind].is("node") ) {
+            nodes_seld.push(all_seld[ind]);
+        }
+    }
+    return nodes_seld;
+}
+
+function get_selected_edges() {
+    var all_seld = get_selected_nodes_and_edges();
+    var edges_seld = [];
+    for( var ind = 0; ind < all_seld.length; ind += 1 ) {
+        if( all_seld[ind].is("edge") ) {
+            edges_seld.push(all_seld[ind]);
+        }
+    }
+    return edges_seld;
+}
+
+function node_select(in_event) {
+    console.log("link");
+    console.log(in_event);
+    console.log(in_event.target.id());
+}
+
+function hierarchical_layout(root_node_id) {
+    var breadthfirst_root = layout_opts["breadthfirst"];
+    breadthfirst_root["roots"] = "[id = \"" + root_node_id + "\"]";
+    global_cy.layout(breadthfirst_root).run();
+}
+
+function set_hierarchical() {
+    var selected_nodes = get_selected_nodes();
+    if(selected_nodes.length != 1) {
+        alert("One node, one node only.");
+        return;
+    }
+    hierarchical_layout(selected_nodes[0].id());
+}
+
+function delete_link() {
+    var selected_links = get_selected_edges();
+    if(selected_links.length != 1) {
+        alert("One edge, one edge only.");
+        return;
+    }
+    var id_to_del = selected_links[0].scratch()["link_id"];
+    delete_link_with_id(id_to_del);
+}
+
+function delete_node() {
+    var selected_nodes = get_selected_nodes();
+    if(selected_nodes.length != 1) {
+        alert("One node, one node only.");
+        return;
+    }
+    var id_to_del = selected_nodes[0].scratch()["node_id"];
+    delete_node_with_id(id_to_del);
+}
+
+function set_elastic_spring() {
+    global_cy.layout(layout_opts["cose"]).run();
+}
+
+function link_select(in_event) {
+    console.log("link");
+    console.log(in_event);
+    console.log(in_event.target.id());
+}
+
+function refresh_graph() {
+    var cur_json_text = document.getElementById(json_element_id).value;
+    var cur_json = JSON.parse(cur_json_text);
+
+    var elements = [];
+    // Add the nodes
+    for(var node_ind = 0; node_ind < cur_json["nodes"].length; node_ind += 1) {
+        var cur_node = cur_json["nodes"][node_ind];
+        var fixed_elem_data = cur_node;
+        fixed_elem_data["id"] = n_pref + fixed_elem_data[node_id_prop_name];
+
+        var node_label = "";
+        // Build the label from the cy_node_display list
+        for(var node_prop_ind = 0; node_prop_ind < cy_node_display.length;
+                node_prop_ind += 1) {
+            if( node_prop_ind > 0 ) {
+                node_label += " - ";
+            }
+            lookup = cur_node[cy_node_display[node_prop_ind]];
+            if( cy_node_display[node_prop_ind] == node_type_prop[0] ) {
+                lookup = node_type_opts[
+                        cur_node[cy_node_display[node_prop_ind]]
+                    ];
+            }
+            node_label += lookup + " ";
+        }
+
+        fixed_elem_data["label"] = node_label;
+
+        // Set node color, later employed via style
+        fixed_elem_data["color"] = default_node_color;
+        if(cur_node[node_type_prop[0]] in node_type_colors) {
+            fixed_elem_data["color"] = node_type_colors[
+                    cur_node[node_type_prop[0]]
+                ];
+        }
+
+        var cur_elem = { 
+            group: "nodes",
+            data: fixed_elem_data,
+            scratch: cur_node,
+            grabbable: true,
+        };
+
+        elements.push(cur_elem);
+    }
+    // Add the links (edges)
+    for(var link_ind = 0; link_ind < cur_json["links"].length; link_ind += 1) {
+        var cur_link = cur_json["links"][link_ind];
+        var fixed_elem_data = cur_link;
+
+        // Make sure the source and target nodes still exist...
+        if( ! does_node_exist_in_json(fixed_elem_data["node_1_id"]) ||
+                ! does_node_exist_in_json(fixed_elem_data["node_2_id"]) ) {
+            console.log("Link " + cur_link[link_id_prop_name] + 
+                    " error resolving a node, either: " + 
+                    fixed_elem_data["node_1_id"] + " " +
+                    fixed_elem_data["node_2_id"]);
+            continue;
+        }
+
+        // Build the edge
+        fixed_elem_data["id"] = l_pref + fixed_elem_data[link_id_prop_name];
+        fixed_elem_data["source"] = n_pref + fixed_elem_data["node_1_id"];
+        fixed_elem_data["target"] = n_pref + fixed_elem_data["node_2_id"];
+        var cur_elem = { 
+            group: "edges",
+            data: fixed_elem_data,
+            scratch: cur_link,
+            grabbable: true
+        };
+        elements.push(cur_elem);
+    }
+    
+    var edge_label_style = "data(" + link_prop_name[0] + ")";
+
+    global_cy = cytoscape({
+        container: document.getElementById(cy_div_id),
+        elements: elements,
+        layout: layout_opts["cose"],
+        style: [
+            {
+                selector: "node",
+                style: {
+                        "label": "data(label)",
+                        "background-color": "data(color)"
+                    }
+            },
+            {
+                selector: ":selected",
+                style: {
+                        "label": "data(label)",
+                        "background-color": selected_node_color,
+                        "line-color": selected_link_color,
+                    }
+            },
+            {
+                selector: "edge",
+                style: {
+                        "label": edge_label_style,
+                        "width": 2,
+                        "curve-style": "straight",
+                        "target-arrow-shape": "triangle"
+                    }
+            }]
+    });
+
+    global_cy.on("select", "node", node_select)
+    global_cy.on("select", "edge", link_select)
 }

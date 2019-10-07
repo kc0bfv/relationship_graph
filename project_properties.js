@@ -14,6 +14,22 @@ var node_type_opts = {
         "AF_mission": "Air Force Mission",
         "AF_member": "Air Force Member"
     }
+// Pallette - https://coolors.co/8c7919-f4d97f-9b4477-756de8-b45cc4
+var node_type_colors = {
+        "inl_team": "#39192C",
+        "inl_member": "#8D3E6D",
+
+        "research_thrust": "#B5A96C",
+        "research_field": "#806E17",
+
+        "AF_unit": "#2B2855",
+        "AF_mission": "#6B64D3",
+        "AF_member": "#A7A2F0"
+    }
+var default_node_color = "blue";
+var selected_node_color = "red";
+var selected_link_color = "red";
+
 var node_props = [
 ["node_name", "node_name", "Name"],
 ["node_notes", "node_notes", "Notes"],
@@ -37,7 +53,7 @@ var node_class_name = "node_list_node";
 
 // Div element for cytoscape
 var cy_div_id = "cytoscape_div";
-var cy_node_display = ["node_name", "node_type"];
+var cy_node_display = ["node_name"];
 
 // Entry Form Div ID
 var entry_form_id = "add_ref_frm";

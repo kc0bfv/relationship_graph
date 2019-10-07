@@ -41,6 +41,12 @@
     <hr>
     <div id="cytoscape_div" style="height: 800px; display: block">
     </div>
+    <div id="cytoscape_controls">
+        <input type="button" onclick="set_hierarchical()" value="Hierarchical View">
+        <input type="button" onclick="set_elastic_spring()" value="Elastic Spring View">
+        <input type="button" onclick="delete_node()" value="Delete Node">
+        <input type="button" onclick="delete_link()" value="Delete Link">
+    </div>
     <hr>
     <div id="json_cont">
       <label for="json_out">JSON</label><textarea id="json_out" cols="80" rows="20">{"nodes": [], "links": []}</textarea>

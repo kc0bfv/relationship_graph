@@ -1,0 +1,312 @@
+{
+  "nodes": [
+    {
+      "node_name": "Top Level Team",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 0
+    },
+    {
+      "node_name": "Mid Level Team 1",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 1
+    },
+    {
+      "node_name": "Mid Level Team 2",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 2
+    },
+    {
+      "node_name": "Mid Level Team 3",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 3
+    },
+    {
+      "node_name": "Low Level Team 1.1",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 4
+    },
+    {
+      "node_name": "Low Level Team 1.2",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 5
+    },
+    {
+      "node_name": "Low Level Team 2.1",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 6
+    },
+    {
+      "node_name": "Low Level Team 2.2",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 7
+    },
+    {
+      "node_name": "Low Level Team 3.1",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 8
+    },
+    {
+      "node_name": "Low Level Team 3.2",
+      "node_notes": "",
+      "node_type": "inl_team",
+      "node_id": 9
+    },
+    {
+      "node_name": "Assist Lab Dir",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 10
+    },
+    {
+      "node_name": "Lead - Team 1",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 11
+    },
+    {
+      "node_name": "Lead - Team 2",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 12
+    },
+    {
+      "node_name": "Lead - Team 3",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 13
+    },
+    {
+      "node_name": "Lead - Team 1.1",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 14
+    },
+    {
+      "node_name": "Lead - Team 1.2",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 15
+    },
+    {
+      "node_name": "Lead - Team 2.2",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 16
+    },
+    {
+      "node_name": "Lead - Team 2.1",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 17
+    },
+    {
+      "node_name": "Lead - Team 3.1",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 18
+    },
+    {
+      "node_name": "Lead - Team 3.2",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 19
+    },
+    {
+      "node_name": "Cool Project 1",
+      "node_notes": "",
+      "node_type": "research_thrust",
+      "node_id": 20
+    },
+    {
+      "node_name": "Cool Project 2",
+      "node_notes": "",
+      "node_type": "research_thrust",
+      "node_id": 21
+    },
+    {
+      "node_name": "Cool Project 3",
+      "node_notes": "",
+      "node_type": "research_thrust",
+      "node_id": 22
+    },
+    {
+      "node_name": "Lead Cool Project 3",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 23
+    },
+    {
+      "node_name": "Lead Cool Project 2",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 24
+    },
+    {
+      "node_name": "Lead Cool Project 1",
+      "node_notes": "",
+      "node_type": "inl_member",
+      "node_id": 25
+    }
+  ],
+  "links": [
+    {
+      "node_1_id": 0,
+      "node_2_id": 1,
+      "link_id": 0,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 0,
+      "node_2_id": 2,
+      "link_id": 1,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 0,
+      "node_2_id": 3,
+      "link_id": 2,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 1,
+      "node_2_id": 4,
+      "link_id": 3,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 1,
+      "node_2_id": 5,
+      "link_id": 4,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 2,
+      "node_2_id": 6,
+      "link_id": 5,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 2,
+      "node_2_id": 7,
+      "link_id": 6,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 3,
+      "node_2_id": 8,
+      "link_id": 7,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 3,
+      "node_2_id": 9,
+      "link_id": 8,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 10,
+      "node_2_id": 0,
+      "link_id": 9,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 11,
+      "node_2_id": 1,
+      "link_id": 10,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 12,
+      "node_2_id": 2,
+      "link_id": 11,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 13,
+      "node_2_id": 3,
+      "link_id": 12,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 14,
+      "node_2_id": 4,
+      "link_id": 13,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 15,
+      "node_2_id": 5,
+      "link_id": 14,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 17,
+      "node_2_id": 6,
+      "link_id": 15,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 16,
+      "node_2_id": 7,
+      "link_id": 16,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 18,
+      "node_2_id": 8,
+      "link_id": 17,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 19,
+      "node_2_id": 9,
+      "link_id": 18,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 25,
+      "node_2_id": 20,
+      "link_id": 19,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 24,
+      "node_2_id": 21,
+      "link_id": 20,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 23,
+      "node_2_id": 22,
+      "link_id": 21,
+      "link_name": "Manager"
+    },
+    {
+      "node_1_id": 5,
+      "node_2_id": 20,
+      "link_id": 22,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 17,
+      "node_2_id": 21,
+      "link_id": 23,
+      "link_name": "Parent Team"
+    },
+    {
+      "node_1_id": 15,
+      "node_2_id": 22,
+      "link_id": 24,
+      "link_name": "Parent Team"
+    }
+  ]
+}

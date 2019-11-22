@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <script type="text/javascript" src="cytoscape.min.js"></script>
+        <script type="text/javascript" src="nodes_links_2.js"></script>
+        <link rel="stylesheet" href="relgraphbuilder2.css">
+    </head>
+    <body onLoad="after_load()">
+    <div id="add_node_form" class="maj_chunk">
+    </div>
+    <div id="add_node_controls" class="maj_chunk">
+        <input type="button" value="Add Node" onclick="add_node()">
+        <input type="button" value="Replace Selected" onclick="replace_selected_node()">
+    </div>
+    <div id="cytoscape_edit_controls" class="maj_chunk">
+        <input type="button" value="Delete Selected" onclick="delete_selected()">
+        <input type="button" value="Edit Node" onclick="edit_node()">
+        <input type="button" value="Link Nodes" onclick="link_nodes()">
+        <label for="link_type_select">Link Type:</label><select id="link_type_select"></select>
+    </div>
+    <div id="cytoscape_area" class="maj_chunk">
+    </div>
+    <div id="cytoscape_view_controls" class="maj_chunk">
+        <input type="button" value="Heirarchical View" onclick="set_hierarchical()">
+        <input type="button" value="Elastic Spring View" onclick="set_elastic_spring()">
+    </div>
+    <div id="json_output" class="maj_chunk">
+        <label for="json_out_area">JSON:</label><textarea id="json_out_area" cols="80" rows="20">
+{
+    "schema": {
+            "node_types": {
+                    "INL Team": {"color": "#39192C"},
+                    "INL Member": {"color": "#8D3E6D"},
+                    "General Research Field": {"color": "#806E17"},
+                    "Specific Research Thrust": {"color": "#B5A96C"},
+                    "Air Force Unit": {"color": "#2B2855"},
+                    "Air Force Mission": {"color": "#6B64D3"},
+                    "Air Force Member": {"color": "#A7A2F0"}
+                },
+            "node_fields": {
+                    "Notes": {"size": "large"}
+                },
+            "edge_types": {
+                    "Manages": {},
+                    "Principal Investigator": {},
+                    "Researcher": {}
+                }
+        },
+    "nodes": [],
+    "edges": []
+}
+        </textarea>
+    </div>
+    <div id="json_controls" class="maj_chunk">
+        <input type="button" value="Build JSON" onclick="cy_to_json()">
+        <input type="button" value="Ingest JSON" onclick="json_to_cy()">
+    </div>
+    </body>
+</html>

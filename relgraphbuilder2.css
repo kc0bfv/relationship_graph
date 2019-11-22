@@ -1,0 +1,6 @@
+.maj_chunk {
+    border-bottom: solid black 1px;
+}
+#cytoscape_area {
+    height: 400px;
+}

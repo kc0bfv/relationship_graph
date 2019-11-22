@@ -1,312 +1,257 @@
 {
+  "schema": {
+    "node_types": {
+      "INL Team": {
+        "color": "#39192C"
+      },
+      "INL Member": {
+        "color": "#8D3E6D"
+      },
+      "General Research Field": {
+        "color": "#806E17"
+      },
+      "Specific Research Thrust": {
+        "color": "#B5A96C"
+      },
+      "Air Force Unit": {
+        "color": "#2B2855"
+      },
+      "Air Force Mission": {
+        "color": "#6B64D3"
+      },
+      "Air Force Member": {
+        "color": "#A7A2F0"
+      }
+    },
+    "node_fields": {
+      "Notes": {
+        "size": "textarea"
+      }
+    },
+    "edge_types": {
+      "Manages": {},
+      "Principal Investigator": {},
+      "Researcher": {}
+    }
+  },
   "nodes": [
     {
-      "node_name": "Top Level Team",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 0
+      "id": 0,
+      "label": "Overall Management",
+      "type": "INL Team",
+      "Notes": ""
     },
     {
-      "node_name": "Mid Level Team 1",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 1
+      "id": "1",
+      "label": "Sub Team 1",
+      "type": "INL Team",
+      "Notes": ""
     },
     {
-      "node_name": "Mid Level Team 2",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 2
+      "id": "2",
+      "label": "Sub Team 2",
+      "type": "INL Team",
+      "Notes": ""
     },
     {
-      "node_name": "Mid Level Team 3",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 3
+      "id": 3,
+      "label": "Eng Team 1",
+      "type": "INL Team",
+      "Notes": ""
     },
     {
-      "node_name": "Low Level Team 1.1",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 4
+      "id": 4,
+      "label": "Eng Team 2",
+      "type": "INL Team",
+      "Notes": ""
     },
     {
-      "node_name": "Low Level Team 1.2",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 5
+      "id": 5,
+      "label": "Eng Team 3",
+      "type": "INL Team",
+      "Notes": ""
     },
     {
-      "node_name": "Low Level Team 2.1",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 6
+      "id": 6,
+      "label": "Big Boss",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Low Level Team 2.2",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 7
+      "id": 7,
+      "label": "Boss of Sub Team 1",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Low Level Team 3.1",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 8
+      "id": 8,
+      "label": "Boss of Sub Team 2",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Low Level Team 3.2",
-      "node_notes": "",
-      "node_type": "inl_team",
-      "node_id": 9
+      "id": 9,
+      "label": "Eng Team 1 Lead",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Assist Lab Dir",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 10
+      "id": 10,
+      "label": "Eng Team 2 Lead",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Lead - Team 1",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 11
+      "id": 11,
+      "label": "Eng Team 3 Lead",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Lead - Team 2",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 12
+      "id": 12,
+      "label": "Researcher 1",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Lead - Team 3",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 13
+      "id": 13,
+      "label": "Researcher 2",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Lead - Team 1.1",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 14
+      "id": 14,
+      "label": "Researcher 3",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Lead - Team 1.2",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 15
+      "id": 15,
+      "label": "Researcher 4",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Lead - Team 2.2",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 16
+      "id": 16,
+      "label": "Researcher 5",
+      "type": "INL Member",
+      "Notes": ""
     },
     {
-      "node_name": "Lead - Team 2.1",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 17
-    },
-    {
-      "node_name": "Lead - Team 3.1",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 18
-    },
-    {
-      "node_name": "Lead - Team 3.2",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 19
-    },
-    {
-      "node_name": "Cool Project 1",
-      "node_notes": "",
-      "node_type": "research_thrust",
-      "node_id": 20
-    },
-    {
-      "node_name": "Cool Project 2",
-      "node_notes": "",
-      "node_type": "research_thrust",
-      "node_id": 21
-    },
-    {
-      "node_name": "Cool Project 3",
-      "node_notes": "",
-      "node_type": "research_thrust",
-      "node_id": 22
-    },
-    {
-      "node_name": "Lead Cool Project 3",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 23
-    },
-    {
-      "node_name": "Lead Cool Project 2",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 24
-    },
-    {
-      "node_name": "Lead Cool Project 1",
-      "node_notes": "",
-      "node_type": "inl_member",
-      "node_id": 25
+      "id": 17,
+      "label": "Researcher 6",
+      "type": "INL Member",
+      "Notes": ""
     }
   ],
-  "links": [
+  "edges": [
     {
-      "node_1_id": 0,
-      "node_2_id": 1,
-      "link_id": 0,
-      "link_name": "Parent Team"
+      "id": 26,
+      "source": "11",
+      "target": "5",
+      "type": "Principal Investigator"
     },
     {
-      "node_1_id": 0,
-      "node_2_id": 2,
-      "link_id": 1,
-      "link_name": "Parent Team"
+      "id": 31,
+      "source": "1",
+      "target": "4",
+      "type": "Manages"
     },
     {
-      "node_1_id": 0,
-      "node_2_id": 3,
-      "link_id": 2,
-      "link_name": "Parent Team"
+      "id": 20,
+      "source": "0",
+      "target": "5",
+      "type": "Manages"
     },
     {
-      "node_1_id": 1,
-      "node_2_id": 4,
-      "link_id": 3,
-      "link_name": "Parent Team"
+      "id": 27,
+      "source": "7",
+      "target": "1",
+      "type": "Manages"
     },
     {
-      "node_1_id": 1,
-      "node_2_id": 5,
-      "link_id": 4,
-      "link_name": "Parent Team"
+      "id": 29,
+      "source": "1",
+      "target": "3",
+      "type": "Manages"
     },
     {
-      "node_1_id": 2,
-      "node_2_id": 6,
-      "link_id": 5,
-      "link_name": "Parent Team"
+      "id": 23,
+      "source": "6",
+      "target": "0",
+      "type": "Manages"
     },
     {
-      "node_1_id": 2,
-      "node_2_id": 7,
-      "link_id": 6,
-      "link_name": "Parent Team"
+      "id": 24,
+      "source": "9",
+      "target": "3",
+      "type": "Principal Investigator"
     },
     {
-      "node_1_id": 3,
-      "node_2_id": 8,
-      "link_id": 7,
-      "link_name": "Parent Team"
+      "id": 25,
+      "source": "10",
+      "target": "4",
+      "type": "Principal Investigator"
     },
     {
-      "node_1_id": 3,
-      "node_2_id": 9,
-      "link_id": 8,
-      "link_name": "Parent Team"
+      "id": 28,
+      "source": "0",
+      "target": "1",
+      "type": "Manages"
     },
     {
-      "node_1_id": 10,
-      "node_2_id": 0,
-      "link_id": 9,
-      "link_name": "Manager"
+      "id": 30,
+      "source": "0",
+      "target": "2",
+      "type": "Manages"
     },
     {
-      "node_1_id": 11,
-      "node_2_id": 1,
-      "link_id": 10,
-      "link_name": "Manager"
+      "id": 32,
+      "source": "2",
+      "target": "5",
+      "type": "Manages"
     },
     {
-      "node_1_id": 12,
-      "node_2_id": 2,
-      "link_id": 11,
-      "link_name": "Manager"
+      "id": 33,
+      "source": "8",
+      "target": "2",
+      "type": "Manages"
     },
     {
-      "node_1_id": 13,
-      "node_2_id": 3,
-      "link_id": 12,
-      "link_name": "Manager"
+      "id": 34,
+      "source": "12",
+      "target": "3",
+      "type": "Researcher"
     },
     {
-      "node_1_id": 14,
-      "node_2_id": 4,
-      "link_id": 13,
-      "link_name": "Manager"
+      "id": 35,
+      "source": "13",
+      "target": "4",
+      "type": "Researcher"
     },
     {
-      "node_1_id": 15,
-      "node_2_id": 5,
-      "link_id": 14,
-      "link_name": "Manager"
+      "id": 36,
+      "source": "14",
+      "target": "5",
+      "type": "Researcher"
     },
     {
-      "node_1_id": 17,
-      "node_2_id": 6,
-      "link_id": 15,
-      "link_name": "Manager"
+      "id": 37,
+      "source": "15",
+      "target": "3",
+      "type": "Researcher"
     },
     {
-      "node_1_id": 16,
-      "node_2_id": 7,
-      "link_id": 16,
-      "link_name": "Manager"
+      "id": 38,
+      "source": "16",
+      "target": "4",
+      "type": "Researcher"
     },
     {
-      "node_1_id": 18,
-      "node_2_id": 8,
-      "link_id": 17,
-      "link_name": "Manager"
-    },
-    {
-      "node_1_id": 19,
-      "node_2_id": 9,
-      "link_id": 18,
-      "link_name": "Manager"
-    },
-    {
-      "node_1_id": 25,
-      "node_2_id": 20,
-      "link_id": 19,
-      "link_name": "Manager"
-    },
-    {
-      "node_1_id": 24,
-      "node_2_id": 21,
-      "link_id": 20,
-      "link_name": "Manager"
-    },
-    {
-      "node_1_id": 23,
-      "node_2_id": 22,
-      "link_id": 21,
-      "link_name": "Manager"
-    },
-    {
-      "node_1_id": 5,
-      "node_2_id": 20,
-      "link_id": 22,
-      "link_name": "Parent Team"
-    },
-    {
-      "node_1_id": 17,
-      "node_2_id": 21,
-      "link_id": 23,
-      "link_name": "Parent Team"
-    },
-    {
-      "node_1_id": 15,
-      "node_2_id": 22,
-      "link_id": 24,
-      "link_name": "Parent Team"
+      "id": 39,
+      "source": "17",
+      "target": "5",
+      "type": "Researcher"
     }
   ]
 }

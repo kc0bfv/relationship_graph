@@ -55,6 +55,7 @@ function find_next_id(id_type, prop_name) {
   return max_id + 1;
 }
 
+/*
 function add_node() {
   // Add a node to the node list
   var new_node = build_node_json_elem();
@@ -67,6 +68,150 @@ function add_node() {
     cur_json, null, 2);
 
   update_GUI();
+}
+*/
+
+function add_node_graph_ver() {
+    // Add a node to the node list
+    var new_node = build_node_json_elem();
+    global_cy.add(build_cy_node(new_node));
+    produce_json_from_graph();
+}
+
+function edit_sel_node_graph_ver() {
+    var sel_node = get_selected_nodes();
+    if(sel_node.length != 1) {
+        alert("Select one node, one node only.");
+        return;
+    }
+    set_edit_vals(sel_node[0].scratch());
+}
+
+// Doesn't rely on JSON...
+function link_nodes_graph_ver() {
+    var sel_nodes = get_selected_nodes();
+    if(sel_nodes.length != 2) {
+        alert("Select two nodes.");
+        return;
+    }
+
+    if(sel_nodes[0].edgesWith(sel_nodes[1]).length > 0) {
+        alert("Nodes already connected.  Failing.");
+        return;
+    }
+    
+    // TODO
+    var json_link_data = {};
+    json_link_data["id"] = find_next_link_id_graph_ver();
+    var new_edge_data = {};
+    new_edge_data["id"] = l_pref + json_link_data["id"];
+    new_edge_data["source"] = sel_nodes[0].id();
+    new_edge_data["target"] = sel_nodes[1].id();
+
+    var new_edge = {
+            "data": new_edge_data,
+            "group": "edges",
+            "scratch": link_d
+        };
+}
+
+function find_next_link_id_graph_ver(){
+    
+}
+
+
+function change_node_graph_ver() {
+    var sel_node = get_selected_nodes();
+    if(sel_node.length != 1) {
+        alert("Select one node, one node only.");
+        return;
+    }
+    var new_node = build_cy_node(build_node_json_elem());
+    global_cy.$(":selected").data(new_node["data"]);
+    global_cy.$(":selected").scratch(new_node["scratch"]);
+    produce_json_from_graph();
+}
+
+function build_cy_node(node_data) {
+    // Turn node_data into a node suitable for cytoscape
+
+    var elem_data = JSON.parse(JSON.stringify(node_data));
+    elem_data["id"] = n_pref + elem_data[node_id_prop_name];
+
+    var node_label = "";
+    // Build the label from the cy_node_display list
+    for(var node_prop_ind = 0; node_prop_ind < cy_node_display.length;
+            node_prop_ind += 1) {
+        if( node_prop_ind > 0 ) {
+            node_label += " - ";
+        }
+        if( cy_node_display[node_prop_ind] == node_type_prop[0] ) {
+            lookup = node_type_opts[
+                    elem_data[cy_node_display[node_prop_ind]]
+                ];
+        } else {
+            lookup = elem_data[cy_node_display[node_prop_ind]];
+        }
+        node_label += lookup;
+    }
+
+    elem_data["label"] = node_label;
+
+    // Set node color, employed via style
+    elem_data["color"] = default_node_color;
+    if(elem_data[node_type_prop[0]] in node_type_colors) {
+        elem_data["color"] = node_type_colors[
+                elem_data[node_type_prop[0]]
+            ];
+    }
+
+    var cur_elem = { 
+        group: "nodes",
+        data: elem_data,
+        scratch: node_data,
+        grabbable: true,
+    };
+
+    return cur_elem;
+}
+
+function build_cy_edge(link_data, nodes) {
+    // Turn data about a link into a cytoscape edge
+    // Returns null if an edge can no longer exist
+
+    function does_node_exist(node_id_chk) {
+        for(var node_ind = 0; node_ind < nodes.length; node_ind += 1) {
+            var tst_node_id = nodes[node_ind]["scratch"][node_id_prop_name];
+            if(tst_node_id == node_id_chk) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    var new_edge = JSON.parse(JSON.stringify(link_data));
+
+    // Make sure the source and target nodes still exist...
+    if( ! does_node_exist(new_edge["node_1_id"]) ||
+            ! does_node_exist(new_edge["node_2_id"]) ) {
+        console.log("Link " + new_edge[link_id_prop_name] + 
+                " error resolving a node, either: " + 
+                new_edge["node_1_id"] + " " +
+                new_edge["node_2_id"]);
+        return null;
+    }
+
+    // Build the edge
+    new_edge["id"] = l_pref + new_edge[link_id_prop_name];
+    new_edge["source"] = n_pref + new_edge["node_1_id"];
+    new_edge["target"] = n_pref + new_edge["node_2_id"];
+    var cur_elem = { 
+        group: "edges",
+        data: new_edge,
+        scratch: link_data,
+        grabbable: true
+    };
+    return cur_elem;
 }
 
 function get_selected_node() {
@@ -279,7 +424,7 @@ function edit_sel_node() {
     return;
   }
 
-  console.log(sel_node.node_props);
+  //console.log(sel_node.node_props);
   set_edit_vals(JSON.parse(sel_node.getAttribute("node_props")));
 }
 
@@ -328,7 +473,7 @@ function select_node(event, node_id) {
 function update_GUI() {
     update_node_list();
     update_link_list();
-    refresh_graph();
+    refresh_graph_from_json();
 }
 
 function update_node_list() {
@@ -354,7 +499,7 @@ function update_node_list() {
     // Build the new node for display
     var new_node_disp = document.createElement("div");
     var new_node_id = node_id_base + cur_elem_ind;
-    console.log(new_node_id);
+    //console.log(new_node_id);
     new_node_disp.id = new_node_id;
     new_node_disp.classList.add(node_class_name);
     new_node_disp.addEventListener("click",
@@ -461,12 +606,21 @@ function build_form() {
         form_div.appendChild(div_sec);
     }
 
+    /*
     var add_button = document.createElement("input");
     add_button.type = "button";
     add_button.onclick = add_node;
     add_button.value = "Add Node";
+    */
+
+    var add_button_2 = document.createElement("input");
+    add_button_2.type = "button";
+    add_button_2.onclick = add_node_graph_ver;
+    add_button_2.value = "Add Node";
+
     div_sec = document.createElement("div");
-    div_sec.appendChild(add_button);
+    //div_sec.appendChild(add_button);
+    div_sec.appendChild(add_button_2);
     form_div.appendChild(div_sec);
 }
 
@@ -570,80 +724,24 @@ function link_select(in_event) {
     console.log(in_event.target.id());
 }
 
-function refresh_graph() {
+function refresh_graph_from_json() {
     var cur_json_text = document.getElementById(json_element_id).value;
     var cur_json = JSON.parse(cur_json_text);
 
-    var elements = [];
+    var nodes = [];
     // Add the nodes
     for(var node_ind = 0; node_ind < cur_json["nodes"].length; node_ind += 1) {
-        var cur_node = cur_json["nodes"][node_ind];
-        var fixed_elem_data = cur_node;
-        fixed_elem_data["id"] = n_pref + fixed_elem_data[node_id_prop_name];
-
-        var node_label = "";
-        // Build the label from the cy_node_display list
-        for(var node_prop_ind = 0; node_prop_ind < cy_node_display.length;
-                node_prop_ind += 1) {
-            if( node_prop_ind > 0 ) {
-                node_label += " - ";
-            }
-            lookup = cur_node[cy_node_display[node_prop_ind]];
-            if( cy_node_display[node_prop_ind] == node_type_prop[0] ) {
-                lookup = node_type_opts[
-                        cur_node[cy_node_display[node_prop_ind]]
-                    ];
-            }
-            node_label += lookup + " ";
-        }
-
-        fixed_elem_data["label"] = node_label;
-
-        // Set node color, later employed via style
-        fixed_elem_data["color"] = default_node_color;
-        if(cur_node[node_type_prop[0]] in node_type_colors) {
-            fixed_elem_data["color"] = node_type_colors[
-                    cur_node[node_type_prop[0]]
-                ];
-        }
-
-        var cur_elem = { 
-            group: "nodes",
-            data: fixed_elem_data,
-            scratch: cur_node,
-            grabbable: true,
-        };
-
-        elements.push(cur_elem);
+        nodes.push(build_cy_node(cur_json["nodes"][node_ind]));
     }
     // Add the links (edges)
+    var edges = [];
     for(var link_ind = 0; link_ind < cur_json["links"].length; link_ind += 1) {
-        var cur_link = cur_json["links"][link_ind];
-        var fixed_elem_data = cur_link;
-
-        // Make sure the source and target nodes still exist...
-        if( ! does_node_exist_in_json(fixed_elem_data["node_1_id"]) ||
-                ! does_node_exist_in_json(fixed_elem_data["node_2_id"]) ) {
-            console.log("Link " + cur_link[link_id_prop_name] + 
-                    " error resolving a node, either: " + 
-                    fixed_elem_data["node_1_id"] + " " +
-                    fixed_elem_data["node_2_id"]);
-            continue;
+        var cy_edge = build_cy_edge(cur_json["links"][link_ind], nodes);
+        if(cy_edge !== null) {
+            edges.push(cy_edge);
         }
-
-        // Build the edge
-        fixed_elem_data["id"] = l_pref + fixed_elem_data[link_id_prop_name];
-        fixed_elem_data["source"] = n_pref + fixed_elem_data["node_1_id"];
-        fixed_elem_data["target"] = n_pref + fixed_elem_data["node_2_id"];
-        var cur_elem = { 
-            group: "edges",
-            data: fixed_elem_data,
-            scratch: cur_link,
-            grabbable: true
-        };
-        elements.push(cur_elem);
     }
-    
+    var elements = nodes.concat(edges);
     var edge_label_style = "data(" + link_prop_name[0] + ")";
 
     global_cy = cytoscape({
@@ -655,7 +753,16 @@ function refresh_graph() {
                 selector: "node",
                 style: {
                         "label": "data(label)",
-                        "background-color": "data(color)"
+                        "background-color": "data(color)",
+                        "compound-sizing-wrt-labels": "include",
+                        "width": "30px",
+                        "height": "30px",
+                        "padding": "50px",
+                        "text-valign": "center",
+                        "color": "white",
+                        "text-outline-color": "black",
+                        "text-outline-opacity": ".8",
+                        "text-outline-width": "1",
                     }
             },
             {
@@ -672,11 +779,32 @@ function refresh_graph() {
                         "label": edge_label_style,
                         "width": 2,
                         "curve-style": "straight",
-                        "target-arrow-shape": "triangle"
+                        "target-arrow-shape": "triangle",
+                        "compound-sizing-wrt-labels": "include",
+                        "color": "white",
+                        "text-outline-color": "black",
+                        "text-outline-opacity": ".8",
+                        "text-outline-width": "1",
                     }
             }]
     });
 
     global_cy.on("select", "node", node_select)
     global_cy.on("select", "edge", link_select)
+}
+
+function produce_json_from_graph() {
+    var all_data = {"nodes": [], "links": []};
+
+    for(var node_ind = 0; node_ind < global_cy.nodes().length; node_ind += 1) {
+        all_data["nodes"].push(global_cy.nodes()[node_ind].scratch());
+    }
+
+    for(var link_ind = 0; link_ind < global_cy.edges().length; link_ind += 1) {
+        all_data["links"].push(global_cy.edges()[link_ind].scratch());
+    }
+
+
+    document.getElementById(json_element_id).value = JSON.stringify(
+        all_data, null, 2);
 }

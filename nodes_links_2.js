@@ -20,9 +20,10 @@ function after_load() {
 }
 
 function add_node() {
-    var node_data = get_node_data();
-    var cy_node = build_cy_node(node_data);
-    window.GLOBAL_cytoscape.add(cy_node);
+    var node_data = get_edit_data();
+    add_node_array([node_data]);
+    node_to_top_left(node_data["id"]);
+    clear_node_input_form();
 }
 
 function replace_selected_node() {
@@ -31,8 +32,21 @@ function replace_selected_node() {
         alert("Select one node, and one node only.");
         return;
     }
-    var node_data = get_node_data();
+    var node_data = get_edit_data();
     var cy_node = update_cy_node(seld[0], node_data);
+    clear_node_input_form();
+}
+
+function select_matching_nodes() {
+    const node_data = get_edit_data();
+    const select_str = build_cy_node_selector(node_data);
+    window.GLOBAL_cytoscape.$(":selected").unselect();
+    window.GLOBAL_cytoscape.$(select_str).select();
+}
+
+function clear_node_input_form() {
+    const form_div = get_elem(node_form_div);
+    clear_input_element_recurse(form_div);
 }
 
 function delete_selected() {
@@ -46,35 +60,94 @@ function link_nodes() {
         return;
     }
     var edge_dat = get_edge_data(seld[0], seld[1]);
-    var cy_edge = build_cy_edge(edge_dat);
-    window.GLOBAL_cytoscape.add(cy_edge);
+    add_edge_array([edge_dat]);
 }
 
 function edit_node() {
-    // TODO
+    clear_node_input_form();
+    const seld = get_selected_nodes();
+    if( seld.length != 1 ) {
+        alert("Select one node, and one node only.");
+        return;
+    }
+    var node = get_cy_elem_by_id(seld[0]);
+    set_edit_data(node.scratch()["raw_dat"]);
 }
 
 function set_hierarchical() {
+    var breadthfirst = get_cy_layout_defaults()["breadthfirst"];
+    breadthfirst["roots"] = ":selected";
+    window.GLOBAL_cytoscape.layout(breadthfirst).run();
 }
 
 function set_elastic_spring() {
+    var cose = get_cy_layout_defaults()["cose"];
+    window.GLOBAL_cytoscape.layout(cose).run();
 }
 
+function set_fit_view() {
+    window.GLOBAL_cytoscape.fit();
+}
+
+function build_json() {
+    cy_to_json();
+}
+
+function ingest_json() {
+    if( window.confirm("Are you sure you want to replace your " +
+            "graph with that described by the JSON?") ) {
+        json_to_cy();
+    }
+}
+
+
+// Utility functions
+
 function cy_to_json() {
-    // TODO
+    const json_out_area = get_elem(json_out_area_id);
+    var json_obj = {
+            "schema": get_graph_schema(),
+            "nodes": window.GLOBAL_cytoscape.$("node").map(
+                    function(elem) {
+                        return elem.scratch()["raw_dat"];
+                    }
+                ),
+            "edges": window.GLOBAL_cytoscape.$("edge").map(
+                    function(elem) {
+                        return elem.scratch()["raw_dat"];
+                    }
+                )
+        };
+    json_out_area.value = JSON.stringify(json_obj, null, 2);
 }
 
 function json_to_cy() {
     const json_out_area = get_elem(json_out_area_id);
     const cur_json = JSON.parse(json_out_area.value);
+    clear_cy_nodes_edges();
     set_graph_schema(cur_json["schema"]);
     build_input_forms();
+    add_node_array(cur_json["nodes"]);
+    add_edge_array(cur_json["edges"]);
 
-    // TODO populate nodes and links
+    set_hierarchical();
 }
 
+function add_node_array(node_data_array) {
+    add_elem_array(node_data_array, build_cy_node);
+}
+function add_edge_array(edge_data_array) {
+    add_elem_array(edge_data_array, build_cy_edge);
+}
+function add_elem_array(elem_array, build_cy_func) {
+    elem_array.forEach(
+            function(elem_data) {
+                var cy_elem = build_cy_func(elem_data);
+                window.GLOBAL_cytoscape.add(cy_elem);
+            }
+        );
+}
 
-// Utility functions
 function get_elem(elem_id) {
     return document.getElementById(elem_id);
 }
@@ -90,6 +163,21 @@ function start_cy() {
     window.GLOBAL_cytoscape.on("unselect", "node", cy_node_unselect);
     window.GLOBAL_cytoscape.on("select", "edge", cy_edge_select);
     window.GLOBAL_cytoscape.on("unselect", "edge", cy_edge_unselect);
+}
+
+function clear_cy_nodes_edges() {
+    // This unselect causes our selection tracking code
+    // more accurately track what's going on.  Without it,
+    // cytoscape doesn't send unselect commands when removing
+    // selected nodes so our selection tracking code doesn't
+    // see them as unselected.
+    window.GLOBAL_cytoscape.$(":selected").unselect();
+    window.GLOBAL_cytoscape.remove("");
+}
+
+function node_to_top_left(node_id) {
+    var node = get_cy_elem_by_id(node_id);
+    node.renderedPosition({"x": 50, "y": 50});
 }
 
 function get_selected_nodes() {
@@ -161,6 +249,8 @@ function build_input_forms() {
 function build_link_type_input() {
     const type_sel = get_elem(LINK_TYPE_SEL);
     const graph_schema = get_graph_schema();
+    type_sel.innerHTML = "";
+
     Object.keys(graph_schema["edge_types"]).forEach(
             function (key) {
                 var opt = document.createElement("option");
@@ -174,6 +264,7 @@ function build_link_type_input() {
 function build_node_input_form() {
     const form_div = get_elem(node_form_div);
     const graph_schema = get_graph_schema();
+    form_div.innerHTML = "";
     var temp_div;
 
     // Build node label entry
@@ -192,6 +283,10 @@ function build_node_input_form() {
     temp_div = document.createElement("div");
     var node_types_ent = document.createElement("select");
     node_types_ent.id = form_id_from_name("type");
+    var node_types_blank_ent = document.createElement("option");
+    node_types_blank_ent.value = "";
+    node_types_blank_ent.innerHTML = "";
+    node_types_ent.appendChild(node_types_blank_ent);
     var node_types_ent_label = document.createElement("label");
     node_types_ent_label.innerHTML = "Type:";
     node_types_ent_label.for = node_types_ent.id;
@@ -215,15 +310,21 @@ function build_node_input_form() {
             function (key) {
                 temp_div = document.createElement("div");
                 var field_ent;
-                if( graph_schema["node_fields"][key]["size"] == "large" ) {
+                if( graph_schema["node_fields"][key]["size"] == "textarea" ) {
                     field_ent = document.createElement("textarea");
+                    field_ent.cols = "40";
+                    field_ent.rows = "20";
                 } else {
                     field_ent = document.createElement("input");
                 }
                 field_ent.type = "text";
                 field_ent.id = form_id_from_name(key);
                 var field_ent_label = document.createElement("label");
-                field_ent_label.innerHTML = key + ":";
+                var label_text = key;
+                if( graph_schema["node_fields"][key]["nice_name"] ) {
+                    label_text = graph_schema["node_fields"][key]["nice_name"];
+                }
+                field_ent_label.innerHTML = label_text + ":";
                 field_ent_label.for = field_ent.id;
                 temp_div.appendChild(field_ent_label);
                 temp_div.appendChild(field_ent);
@@ -231,6 +332,23 @@ function build_node_input_form() {
             }
         );
 
+    clear_node_input_form();
+}
+
+function clear_input_element_recurse(elem) {
+    const tag_name = elem.tagName.toLowerCase();
+    if( tag_name == "div" ) {
+        Object.keys(elem.children).forEach(
+                function(key) {
+                    clear_input_element_recurse(elem.children[key]);
+                }
+            );
+    } else if( tag_name == "input" || tag_name == "textarea" ||
+            tag_name == "select" ) {
+        elem.value = "";
+    } else {
+        // labels, other...  just ignore it
+    }
 }
 
 function get_next_unused_id() {
@@ -246,7 +364,22 @@ function get_next_unused_id() {
     return max_id + 1;
 }
 
-function get_node_data() {
+function set_edit_data(node_data) {
+    Object.keys(node_data).forEach(
+            function(key) {
+                if( key == "id" ) {
+                    return;
+                }
+                const form_id = form_id_from_name(key);
+                const elem = get_elem(form_id);
+                if( elem ) {
+                    elem.value = node_data[key];
+                }
+            }
+        );
+}
+
+function get_edit_data() {
     const graph_schema = get_graph_schema();
     var node_data = {
             "id": get_next_unused_id()
@@ -264,22 +397,57 @@ function get_node_data() {
 }
 
 function update_cy_node(node_id, node_data) {
-    var node = window.GLOBAL_cytoscape.$("[id='" + node_id + "']")[0];
+    node_data["id"] = node_id;
+
+    var node = get_cy_elem_by_id(node_id);
     var cy_node = build_cy_node(node_data);
+
     node.data(cy_node["data"]);
     node.scratch(cy_node["scratch"]);
 }
 
+function get_cy_elem_selector_by_id(elem_id) {
+    return "[id='" + elem_id + "']"
+}
+function get_cy_elem_by_id(elem_id) {
+    return window.GLOBAL_cytoscape.$(get_cy_elem_selector_by_id(elem_id))[0];
+}
+
+function build_cy_node_selector(node_data) {
+    const sel_entries = Object.keys(node_data).map(
+            function(key) {
+                if( key == "id" ) {
+                    return "";
+                }
+                if( node_data[key] == "" ) {
+                    return "";
+                }
+                return "[" + key + " @*= '" + node_data[key] + "']";
+            }
+        );
+    const selector = "node" + sel_entries.reduce(
+            function(prev, cur) {
+                return prev + cur;
+            }
+        );
+    console.log(selector);
+    return selector;
+}
+
+function deep_copy_dict(to_copy) {
+    return JSON.parse(JSON.stringify(to_copy));
+}
+
 function build_cy_node(node_data) {
-    var cy_data = {
-            "id": node_data["id"],
-            "label": build_node_cy_label(node_data),
-            "color": build_node_cy_color(node_data)
-        };
+    var cy_data = deep_copy_dict(node_data);
+    cy_data["label"] = build_node_cy_label(node_data);
+    cy_data["color"] = build_node_cy_color(node_data);
     var cy_node = {
             "group": "nodes",
             "data": cy_data,
-            "scratch": node_data,
+            "scratch": {
+                    "raw_dat": node_data
+                },
             "grabbable": true
         };
     return cy_node;
@@ -305,7 +473,9 @@ function build_cy_edge(edge_data) {
     var cy_edge = {
             "group": "edges",
             "data": cy_data,
-            "scratch": edge_data,
+            "scratch": {
+                    "raw_dat": edge_data
+                },
             "grabbable": true
         };
     return cy_edge;
@@ -321,12 +491,14 @@ function build_edge_cy_label(edge_data) {
 
 function build_node_cy_color(node_data) {
     const graph_schema = get_graph_schema();
-    var sch_color = graph_schema["node_types"][node_data["type"]]["color"];
-    if( sch_color ) {
-        return sch_color;
-    } else {
-        return window.GLOBALS_default_node_color;
+    var node_type_entry = graph_schema["node_types"][node_data["type"]];
+    if( node_type_entry ) {
+        var sch_color = node_type_entry["color"];
+        if( sch_color ) {
+            return sch_color;
+        }
     }
+    return window.GLOBALS_default_node_color;
 }
 
 function get_cy_style() {

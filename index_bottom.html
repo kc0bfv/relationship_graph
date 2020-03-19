@@ -1,0 +1,98 @@
+        </style>
+    </head>
+    <body onLoad="after_load()">
+    <div id="main-body">
+    <div id="header">
+        <div id="json_save_area" class="subsection">
+            <input type="text" value="project_name" id="project_name" title="Project Name">
+            <input type="button" value="Save" onclick="save_file()">
+        </div>
+
+        <h1>Relationship Graph</h1>
+    </div>
+    <div id="main-content">
+    <div id="cytoscape_surround" class="section">
+        <div id="cytoscape_area" class="subsection">
+        </div>
+        <div id="cytoscape_view_controls" class="subsection">
+            <input type="button" value="Heirarchical View" onclick="set_hierarchical()">
+            <input type="button" value="Elastic Spring View" onclick="set_elastic_spring()">
+            <input type="button" value="Fit View" onclick="set_fit_view()">
+        </div>
+        <div id="cytoscape_edit_controls" class="subsection">
+            <input type="button" value="Delete Selected" onclick="delete_selected()">
+            <input type="button" value="Edit Node" onclick="edit_node()">
+            <input type="button" value="Link Nodes" onclick="link_nodes()">
+            <label for="link_type_select">Link Type:</label><select id="link_type_select"></select>
+        </div>
+    </div>
+    <div id="node_form_surround" class="section">
+        <div id="add_node_form" class="subsection">
+        </div>
+        <div id="add_node_controls" class="subsection">
+            <input type="button" value="Add Node" onclick="add_node()">
+            <input type="button" value="Replace Selected" onclick="replace_selected_node()">
+            <input type="button" value="Find Matching" onclick="select_matching_nodes()">
+            <input type="button" value="Clear Data" onclick="clear_node_input_form()">
+        </div>
+    </div>
+    <div id="json_surround" class="section">
+        <details>
+        <summary>Display JSON Editor</summary>
+        <div id="json_vis_area" class="subsection">
+            <div id="json_output" class="subsection">
+                <label for="json_out_area">JSON:</label>
+                <textarea id="json_out_area" rows="20">
+{
+  "schema": {
+    "node_types": {
+      "INL Team": {
+        "color": "#39192C"
+      },
+      "INL Member": {
+        "color": "#8D3E6D"
+      },
+      "General Research Field": {
+        "color": "#806E17"
+      },
+      "Specific Research Thrust": {
+        "color": "#B5A96C"
+      },
+      "Air Force Unit": {
+        "color": "#2B2855"
+      },
+      "Air Force Mission": {
+        "color": "#6B64D3"
+      },
+      "Air Force Member": {
+        "color": "#A7A2F0"
+      }
+    },
+    "node_fields": {
+      "notes": {
+        "size": "textarea",
+        "nice_name": "Notes"
+      }
+    },
+    "edge_types": {
+      "Manages": {},
+      "Principal Investigator": {},
+      "Researcher": {}
+    }
+  },
+  "nodes": [],
+  "edges": []
+}
+                </textarea>
+            </div>
+            <div id="json_controls" class="subsection">
+                <input type="button" value="Build JSON" onclick="build_json()">
+                <input type="button" value="Ingest JSON" onclick="ingest_json()">
+            </div>
+        </div>
+        </details>
+    </div>
+    </div>
+    </div>
+    </body>
+</html>

@@ -3,6 +3,7 @@ const node_form_div = "add_node_form";
 const cytoscape_div_id = "cytoscape_area";
 const json_out_area_id = "json_out_area";
 const LINK_TYPE_SEL = "link_type_select";
+const project_name_elem_id = "project_name";
 
 // Globals
 window.GLOBAL_graph_schema = {};
@@ -100,6 +101,33 @@ function ingest_json() {
     }
 }
 
+function save_file() {
+    let proj_name_box = document.getElementById(project_name_elem_id);
+    let proj_name = proj_name_box.value;
+
+    // Sync the value with the DOM html
+    proj_name_box.setAttribute("value", proj_name);
+
+    build_json();
+
+    let cy_area = document.getElementById(cytoscape_div_id);
+    let cy_elems = Object.values(cy_area.childNodes).map(function(val){return val;});
+    cy_area.innerHTML = "";
+    let content = document.childNodes[0].outerHTML;
+    cy_elems.forEach(function(val){cy_area.appendChild(val);});
+
+    let blob = new Blob([content], { type: "text/html; charset=utf-8" });
+    let url = URL.createObjectURL(blob);
+    let anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = proj_name;
+
+    let click = document.createEvent("MouseEvents");
+    click.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+    anchor.dispatchEvent(click);
+}
+
 
 // Utility functions
 
@@ -118,12 +146,18 @@ function cy_to_json() {
                     }
                 )
         };
-    json_out_area.value = JSON.stringify(json_obj, null, 2);
+    new_json = JSON.stringify(json_obj, null, 2);
+    json_out_area.innerHTML = new_json;
+    json_out_area.value = new_json;
 }
 
 function json_to_cy() {
     const json_out_area = get_elem(json_out_area_id);
     const cur_json = JSON.parse(json_out_area.value);
+    
+    // Sync the innerHTML with the value...
+    cur_json.innerHTML = cur_json;
+
     clear_cy_nodes_edges();
     set_graph_schema(cur_json["schema"]);
     build_input_forms();
@@ -272,8 +306,9 @@ function build_node_input_form() {
     var node_label_ent = document.createElement("input");
     node_label_ent.type = "text";
     node_label_ent.id = form_id_from_name("label"); 
+    node_label_ent.title = "Node label, or name"
     var node_label_ent_label = document.createElement("label");
-    node_label_ent_label.innerHTML = "Label:";
+    node_label_ent_label.innerHTML = "Node Label:";
     node_label_ent_label.for = node_label_ent.id;
     temp_div.appendChild(node_label_ent_label);
     temp_div.appendChild(node_label_ent);
@@ -288,7 +323,7 @@ function build_node_input_form() {
     node_types_blank_ent.innerHTML = "";
     node_types_ent.appendChild(node_types_blank_ent);
     var node_types_ent_label = document.createElement("label");
-    node_types_ent_label.innerHTML = "Type:";
+    node_types_ent_label.innerHTML = "Node Type:";
     node_types_ent_label.for = node_types_ent.id;
 
     // Add the types options to the entry
@@ -313,7 +348,7 @@ function build_node_input_form() {
                 if( graph_schema["node_fields"][key]["size"] == "textarea" ) {
                     field_ent = document.createElement("textarea");
                     field_ent.cols = "40";
-                    field_ent.rows = "20";
+                    field_ent.rows = "10";
                 } else {
                     field_ent = document.createElement("input");
                 }

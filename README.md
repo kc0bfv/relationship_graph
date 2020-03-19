@@ -8,7 +8,15 @@ This began as a way to track references during research in such a way that can b
 Additionally - none of the data you enter is passed over the network.  The cytoscape.js library doesn't do that, and my code doesn't do that.  All the data stays in your browser instance.  This makes it more reasonable for handling sensitive data, but it also means that you had better remember to save often.  Saving is done using the JSON section at the bottom.
 
 ## Usage
-View `relationship_graph.html`.  Use the GUI.  Save your work by building JSON from your graph, then copying the JSON out to an external file.  Load your work by copying JSON into the field and ingesting it.
+The graph displays in the top section, nodes are edited in the second section, and the raw JSON can be modified in the bottom section.  File name and a save button are in the header.
+
+Add your first node via the middle section, then manipulate the graph display like you might manipulate Google Maps.  If you loose your nodes, the "fit" buttons will display them again.
+
+Modify nodes by selecting one then clicking "edit node".  The node edit area will be populated.  Click "replace selected" to save node changes (make sure you still have the correct node selected...).
+
+The save button will download an HTML file encapsulating this program and your graph.  Use that new file to open the graph later.
+
+Anyone with a modern web browser can open the self-contained relationship graph HTML file.  No network resources are required.
 
 ## JSON Format Details
 The JSON is an object with three keys: schema, nodes, edges.  Schema is an object described below, nodes is a list of nodes, and edges is a list of edges.  Add some edges and nodes and `Build JSON` to see how the nodes and edges lists work.
@@ -33,3 +41,13 @@ edge_type_object := {}
 ```
 
 Unexpected keys and values in the schema objects should be ignored, and missing ones get default values.  Thus, schema setup can improve over time.
+
+## Modifying the Source
+
+Don't modify the `index.html` file...  Modify the `js`, `css`, and `index_*` files, then run `make` to rebuild `index.html`.  The Makefile just concatenates everything together...
+
+## Thank You
+
+Thank you to the [Cytoscape team](https://js.cytoscape.org/) - their software is embedded.
+
+Save feature inspired by TiddlyWiki.

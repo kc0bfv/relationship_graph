@@ -130,7 +130,6 @@ function save_file() {
 
 
 // Utility functions
-
 function cy_to_json() {
     const json_out_area = get_elem(json_out_area_id);
     var json_obj = {
@@ -153,8 +152,17 @@ function cy_to_json() {
 
 function json_to_cy() {
     const json_out_area = get_elem(json_out_area_id);
-    const cur_json = JSON.parse(json_out_area.value);
+    try {
+        var cur_json = JSON.parse(json_out_area.value);
+    } catch ( error ) {
+        alert("Error parsing JSON:\n" + error);
+        return;
+    }
     
+    if( !validate_json(cur_json) ) {
+        return;
+    }
+
     // Sync the innerHTML with the value...
     cur_json.innerHTML = cur_json;
 
@@ -165,6 +173,28 @@ function json_to_cy() {
     add_edge_array(cur_json["edges"]);
 
     set_hierarchical();
+}
+
+function validate_json(cur_json) {
+    // Validate JSON a little...
+    json_keys = Object.keys(cur_json);
+    if( ! json_keys.includes("schema") ||
+        ! json_keys.includes("nodes") ||
+        ! json_keys.includes("edges") ) {
+        alert("JSON did not include one or more of: schema, nodes, edges");
+        return false;
+    }
+    if( cur_json["schema"]["node_types"] === undefined ||
+        cur_json["schema"]["node_fields"] === undefined ) {
+        alert("Invalid schema:" +
+                "did not contain either node_types or node_fields");
+        return false;
+    }
+    return true;
+}
+
+function err_wrap(func) {
+    try { func(); } catch(error) { alert("ERROR:\n" + error); }
 }
 
 function add_node_array(node_data_array) {

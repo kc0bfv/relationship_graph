@@ -14,6 +14,9 @@ body {
     background-color: #d8ae47;
     margin: 0;
 }
+h1, h2, h3, h4, h5, h6 {
+    margin: 5px 10px;
+}
 #main-body {
     display: flex;
     flex-direction: column;
@@ -23,6 +26,10 @@ body {
 }
 #header #json_save_area {
     float: left;
+}
+#header details {
+    clear: both;
+    margin: 10px 10px;
 }
 #header h1 {
     color: #424242;
@@ -36,6 +43,13 @@ body {
     padding: 0 20px;
     background: #f8f7f2;
     border-bottom: solid #c3c5c4 1px;
+}
+.help_section {
+    border: solid #c3c5c4 1px;
+    border-radius: 5px;
+    background-color: #f8f7f2;
+    padding: 10px;
+    margin: 10px;
 }
 #main-content {
     flex: auto;

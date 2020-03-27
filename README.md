@@ -23,7 +23,7 @@ Your data is stored inside a copy of the page.  It gets represented as JSON when
 The JSON is an object with three keys: schema, nodes, and edges.  Schema is an object described below, nodes is a list of nodes, and edges is a list of edges.  Add some edges and nodes and click "build JSON" to see how the nodes and edges lists work.
 
 ```
-schema_object := {"node_types": node_types_object, "node_fields": node_fields_object, "edge_types": edge_types_object}
+schema_object := {"node_types": node_types_object, "node_fields": node_fields_object, "edge_types": edge_types_object, "default_root_ids": root_ids_list}
 
 node_types_object := {node_type_name: node_type_object, ...}
 node_type_name : A string, any valid JSON key values permitted, that becomes a possible value for node types.
@@ -39,6 +39,8 @@ nice_name : A string, any valid JSON string permitted, that is the name of the f
 edge_types_object := {edge_type_name: edge_type_object, ...}
 edge_type_name := A string, any valid JSON key values permitted, that becomes a possible value for edge types.
 edge_type_object := {}
+
+root_ids_list := A list of the id numbers of nodes to use as the hierarchical root when no other root is selected.
 ```
 
 Unexpected keys and values in the schema objects should be ignored, and missing ones get default values.  Thus, schema setup can improve over time.

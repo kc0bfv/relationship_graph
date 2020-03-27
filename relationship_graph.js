@@ -77,7 +77,18 @@ function edit_node() {
 
 function set_hierarchical() {
     var breadthfirst = get_cy_layout_defaults()["breadthfirst"];
-    breadthfirst["roots"] = ":selected";
+    const seld = get_selected_nodes();
+    const graph_schema = get_graph_schema();
+    if( seld.length < 1 &&
+            Object.keys(graph_schema).includes("default_root_ids") ) {
+        const id_sels = graph_schema["default_root_ids"].map( function(elem_id) {
+                return "node" + get_cy_elem_selector_by_id(elem_id);
+            });
+        breadthfirst["roots"] = id_sels.join(", ");
+        //console.log("Calculated " + breadthfirst["roots"]);
+    } else {
+        breadthfirst["roots"] = ":selected";
+    }
     window.GLOBAL_cytoscape.layout(breadthfirst).run();
 }
 

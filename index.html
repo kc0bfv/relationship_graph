@@ -656,6 +656,9 @@ function get_graph_schema(schema) {
 }
         </script>
         <style>
+#cytoscape_area {
+    height: 400px;
+}
 colors {
     spicymustard: #d8ae47;
     seashell: #f8f7f2;
@@ -713,7 +716,7 @@ h1, h2, h3, h4, h5, h6 {
     flex: auto;
     overflow-y: auto;
 }
-textarea, input, select, .section, #cytoscape_area {
+textarea, input, select, .section {
     border: solid #c3c5c4 1px;
     border-radius: 5px;
     background-color: #f8f7f2;
@@ -729,9 +732,6 @@ textarea, input, select {
 }
 .subsection {
     border: none;
-}
-#cytoscape_area {
-    height: 400px;
 }
 textarea {
     width: 100%;
@@ -791,7 +791,7 @@ textarea {
     <div id="main-content">
     <div id="cytoscape_surround" class="section">
         <h2>Graph Area</h2>
-        <div id="cytoscape_area" class="subsection">
+        <div id="cytoscape_area" class="section">
         </div>
         <div id="cytoscape_view_controls" class="subsection">
             <input type="button" value="Heirarchical View" onclick="err_wrap(set_hierarchical)">

@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
     <head>
         <script>
@@ -670,10 +671,15 @@ colors {
 :focus {
     outline: #b1ac85 auto 1px;
 }
+html {
+    height: 100%;
+}
 body {
     color: #222222;
     background-color: #d8ae47;
     margin: 0;
+    height: 100%;
+    overflow: hidden;
 }
 h1, h2, h3, h4, h5, h6 {
     margin: 5px 10px;
@@ -688,8 +694,10 @@ h1, h2, h3, h4, h5, h6 {
 #header #json_save_area {
     float: left;
 }
-#header details {
+.clear-div {
     clear: both;
+}
+#header details {
     margin: 10px 10px;
 }
 #header h1 {
@@ -700,7 +708,7 @@ h1, h2, h3, h4, h5, h6 {
     float: right;
 }
 #header {
-    flex: none;
+    flex-shrink: 0;
     padding: 0 20px;
     background: #f8f7f2;
     border-bottom: solid #c3c5c4 1px;
@@ -713,7 +721,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 10px;
 }
 #main-content {
-    flex: auto;
+    flex-grow: 1;
     overflow-y: auto;
 }
 textarea, input, select, .section {
@@ -748,7 +756,7 @@ textarea {
 
         <h1>Relationship Graph</h1>
 
-        <details>
+        <details class="clear-div">
             <summary>Help</summary>
             <div class="help_section">
                 <h3>Usage</h3>

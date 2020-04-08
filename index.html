@@ -151,7 +151,7 @@ function save_file() {
     let cy_area = document.getElementById(cytoscape_div_id);
     let cy_elems = Object.values(cy_area.childNodes).map(function(val){return val;});
     cy_area.innerHTML = "";
-    let content = document.childNodes[0].outerHTML;
+    let content = document.getElementsByTagName("html")[0].outerHTML;
     cy_elems.forEach(function(val){cy_area.appendChild(val);});
 
     let blob = new Blob([content], { type: "text/html; charset=utf-8" });
@@ -691,9 +691,6 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     margin: 0 auto;
 }
-#header #json_save_area {
-    float: left;
-}
 .clear-div {
     clear: both;
 }
@@ -712,6 +709,8 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 20px;
     background: #f8f7f2;
     border-bottom: solid #c3c5c4 1px;
+    max-height: 100%;
+    overflow-y: auto;
 }
 .help_section {
     border: solid #c3c5c4 1px;
@@ -749,12 +748,12 @@ textarea {
     <body onload="err_wrap(after_load)">
     <div id="main-body">
     <div id="header">
+        <h1>Relationship Graph</h1>
+
         <div id="json_save_area" class="subsection">
             <input type="text" value="project_name" id="project_name" title="Project Name">
             <input type="button" value="Save" onclick="err_wrap(save_file)">
         </div>
-
-        <h1>Relationship Graph</h1>
 
         <details class="clear-div">
             <summary>Help</summary>

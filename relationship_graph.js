@@ -124,7 +124,7 @@ function save_file() {
     let cy_area = document.getElementById(cytoscape_div_id);
     let cy_elems = Object.values(cy_area.childNodes).map(function(val){return val;});
     cy_area.innerHTML = "";
-    let content = document.childNodes[0].outerHTML;
+    let content = document.getElementsByTagName("html")[0].outerHTML;
     cy_elems.forEach(function(val){cy_area.appendChild(val);});
 
     let blob = new Blob([content], { type: "text/html; charset=utf-8" });

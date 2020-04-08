@@ -29,9 +29,6 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
     margin: 0 auto;
 }
-#header #json_save_area {
-    float: left;
-}
 .clear-div {
     clear: both;
 }
@@ -50,6 +47,8 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0 20px;
     background: #f8f7f2;
     border-bottom: solid #c3c5c4 1px;
+    max-height: 100%;
+    overflow-y: auto;
 }
 .help_section {
     border: solid #c3c5c4 1px;

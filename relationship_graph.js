@@ -52,6 +52,7 @@ function clear_node_input_form() {
 
 function delete_selected() {
     window.GLOBAL_cytoscape.remove(":selected");
+    window.GLOBAL_cytoscape.$(":selected").unselect();
 }
 
 function link_nodes() {
@@ -112,6 +113,17 @@ function ingest_json() {
     }
 }
 
+function save_url(url, download_name) {
+    let anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = download_name;
+
+    let click = document.createEvent("MouseEvents");
+    click.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+    anchor.dispatchEvent(click);
+}
+
 function save_file() {
     let proj_name_box = document.getElementById(project_name_elem_id);
     let proj_name = proj_name_box.value;
@@ -129,14 +141,13 @@ function save_file() {
 
     let blob = new Blob([content], { type: "text/html; charset=utf-8" });
     let url = URL.createObjectURL(blob);
-    let anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = proj_name;
 
-    let click = document.createEvent("MouseEvents");
-    click.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    save_url(url, proj_name);
+}
 
-    anchor.dispatchEvent(click);
+function export_to_png() {
+    const png_dat = GLOBAL_cytoscape.png();
+    save_url(png_dat, "graph");
 }
 
 

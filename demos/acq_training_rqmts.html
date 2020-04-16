@@ -780,7 +780,7 @@ textarea {
         <h1>Relationship Graph</h1>
 
         <div id="json_save_area" class="subsection">
-            <input type="text" value="call_tree_demo" id="project_name" title="Project Name">
+            <input type="text" value="acq_training_rqmts" id="project_name" title="Project Name">
             <input type="button" value="Save" onclick="err_wrap(save_file)">
         </div>
 
@@ -827,7 +827,7 @@ textarea {
     <div id="main-content">
     <div id="cytoscape_surround" class="section">
         <h2>Graph Area</h2>
-        <div id="cytoscape_area" class="section __________cytoscape_container" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 925px; height: 595px;"></div>
+        <div id="cytoscape_area" class="section __________cytoscape_container" style="-webkit-tap-highlight-color: rgba(0,0,0,0);"></div>
         <div id="cytoscape_view_controls" class="subsection">
             <input type="button" value="Heirarchical View" onclick="err_wrap(set_hierarchical)">
             <input type="button" value="Elastic Spring View" onclick="err_wrap(set_elastic_spring)">
@@ -838,12 +838,12 @@ textarea {
             <input type="button" value="Delete Selected" onclick="err_wrap(delete_selected)">
             <input type="button" value="Edit Node" onclick="err_wrap(edit_node)">
             <input type="button" value="Link Nodes" onclick="err_wrap(link_nodes)">
-            <label for="link_type_select">Link Type:</label><select id="link_type_select"><option value="Calls">Calls</option></select>
+            <label for="link_type_select">Link Type:</label><select id="link_type_select"><option value="Requires">Requires</option><option value="Prerequisite">Prerequisite</option></select>
         </div>
     </div>
     <div id="node_form_surround" class="section">
         <h2>Node Area</h2>
-        <div id="add_node_form" class="subsection"><div><label>Node Label:</label><input type="text" id="node_label_entry" title="Node label, or name"></div><div><label>Node Type:</label><select id="node_type_entry"><option value=""></option><option value="Team Member">Team Member</option><option value="External Organization">External Organization</option></select></div><div><label>Cell Phone Number:</label><input type="text" id="node_cellphone_entry"></div><div><label>Work Phone Number:</label><input type="text" id="node_workphone_entry"></div><div><label>Address:</label><input type="text" id="node_address_entry"></div></div>
+        <div id="add_node_form" class="subsection"><div><label>Node Label:</label><input type="text" id="node_label_entry" title="Node label, or name"></div><div><label>Node Type:</label><select id="node_type_entry"><option value=""></option><option value="Certification Type">Certification Type</option><option value="Required Online Course">Required Online Course</option><option value="Required In-person Course">Required In-person Course</option><option value="Completed Course">Completed Course</option></select></div><div><label>Notes:</label><textarea cols="40" rows="10" id="node_notes_entry"></textarea></div></div>
         <div id="add_node_controls" class="subsection">
             <input type="button" value="Add Node" onclick="err_wrap(add_node)">
             <input type="button" value="Replace Selected" onclick="err_wrap(replace_selected_node)">
@@ -861,363 +861,245 @@ textarea {
                 <textarea id="json_out_area" rows="20">{
   "schema": {
     "node_types": {
-      "Team Member": {
+      "Certification Type": {
         "color": "#39192C"
       },
-      "External Organization": {
-        "color": "#2B2855"
+      "Required Online Course": {
+        "color": "#B5A96C"
+      },
+      "Required In-person Course": {
+        "color": "#806E17"
+      },
+      "Completed Course": {
+        "color": "#8D3E6D"
       }
     },
     "node_fields": {
-      "cellphone": {
-        "nice_name": "Cell Phone Number"
-      },
-      "workphone": {
-        "nice_name": "Work Phone Number"
-      },
-      "address": {
-        "nice_name": "Address"
+      "notes": {
+        "size": "textarea",
+        "nice_name": "Notes"
       }
     },
     "edge_types": {
-      "Calls": {}
+      "Requires": {},
+      "Prerequisite": {}
     },
     "default_root_ids": [
-      1
+      0
     ]
   },
   "nodes": [
     {
       "id": 0,
-      "label": "Jaimee Cornelius",
-      "type": "Team Member",
-      "cellphone": "707-555-4210",
-      "workphone": "",
-      "address": ""
+      "label": "S&amp;TM Level 1",
+      "type": "Certification Type",
+      "notes": ""
     },
     {
       "id": "1",
-      "label": "Parent Organization",
-      "type": "External Organization",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "ACQ 101",
+      "type": "Completed Course",
+      "notes": "Fundamentals of Systems Acquisition Management"
     },
     {
-      "id": 3,
-      "label": "Delphine Cotton",
-      "type": "Team Member",
-      "cellphone": "707-555-4211",
-      "workphone": "",
-      "address": ""
+      "id": "2",
+      "label": "ENG 101",
+      "type": "Completed Course",
+      "notes": "Fundamentals of Systems Engineering"
     },
     {
-      "id": 4,
-      "label": "Huey Montenegro",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "3",
+      "label": "CLE 068",
+      "type": "Completed Course",
+      "notes": "Intellectual Property and Data Rights"
     },
     {
-      "id": 5,
-      "label": "Corrin Watts",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 6,
-      "label": "Katelynn Laferriere",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 7,
-      "label": "Wayne Hemmingway",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 8,
-      "label": "Martin Hohn",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "4",
+      "label": "STM 101",
+      "type": "Completed Course",
+      "notes": "Introduction to Science and Technology Management"
     },
     {
       "id": 9,
-      "label": "Kasi Ellett",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "S&amp;TM Level 2",
+      "type": "Certification Type",
+      "notes": ""
     },
     {
-      "id": 10,
-      "label": "Aisha Findlay",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "11",
+      "label": "ACQ 202",
+      "type": "Completed Course",
+      "notes": "Intermediate Systems Acquisition, Part A"
     },
     {
-      "id": 11,
-      "label": "Judson Burkes",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "12",
+      "label": "CLE 021",
+      "type": "Required Online Course",
+      "notes": "Technology Readiness Assessments"
     },
     {
-      "id": 12,
-      "label": "Leeanna Provo",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "13",
+      "label": "STM 0010",
+      "type": "Completed Course",
+      "notes": "Prototyping and Experimentation"
     },
     {
-      "id": 13,
-      "label": "Austin Folse",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 14,
-      "label": "Jeni Wolfgang",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 15,
-      "label": "Claud Bill",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 16,
-      "label": "Vanita Chevere",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 17,
-      "label": "Josef Brandes",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 18,
-      "label": "Lorinda Mcknight",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "14",
+      "label": "STM 204",
+      "type": "Required In-person Course",
+      "notes": "Intermediate Science and Technology Management (R)"
     },
     {
       "id": 19,
-      "label": "Garret Steedley",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "S&amp;TM Level 3",
+      "type": "Certification Type",
+      "notes": ""
     },
     {
-      "id": 20,
-      "label": "Rina Kuehner",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "20",
+      "label": "CLM 014",
+      "type": "Required Online Course",
+      "notes": "Team Management and Leadership"
     },
     {
-      "id": 21,
-      "label": "Ted Freund",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "21",
+      "label": "CLE 069",
+      "type": "Required Online Course",
+      "notes": "Technology Transfer"
     },
     {
-      "id": 22,
-      "label": "Kenisha Saunders",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "22",
+      "label": "STM 304",
+      "type": "Required In-person Course",
+      "notes": "Leadership in Science and Technology Management (R)"
     },
     {
-      "id": 43,
-      "label": "Subcontract Manager",
-      "type": "External Organization",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 44,
-      "label": "Subcontract Manager",
-      "type": "External Organization",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": 28,
+      "label": "CLE 021",
+      "type": "Required Online Course",
+      "notes": ""
     }
   ],
   "edges": [
     {
-      "id": 2,
-      "source": "1",
+      "id": 5,
+      "source": "0",
+      "target": "1",
+      "type": "Requires"
+    },
+    {
+      "id": 6,
+      "source": "0",
+      "target": "4",
+      "type": "Requires"
+    },
+    {
+      "id": 7,
+      "source": "0",
+      "target": "3",
+      "type": "Requires"
+    },
+    {
+      "id": 8,
+      "source": "0",
+      "target": "2",
+      "type": "Requires"
+    },
+    {
+      "id": 10,
+      "source": "9",
       "target": "0",
-      "type": "Calls"
+      "type": "Prerequisite"
+    },
+    {
+      "id": 15,
+      "source": "9",
+      "target": "13",
+      "type": "Requires"
+    },
+    {
+      "id": 16,
+      "source": "9",
+      "target": "12",
+      "type": "Requires"
+    },
+    {
+      "id": 17,
+      "source": "9",
+      "target": "14",
+      "type": "Requires"
+    },
+    {
+      "id": 18,
+      "source": "9",
+      "target": "11",
+      "type": "Requires"
     },
     {
       "id": 23,
-      "source": "0",
+      "source": "19",
       "target": "20",
-      "type": "Calls"
+      "type": "Requires"
     },
     {
       "id": 24,
-      "source": "0",
+      "source": "19",
       "target": "22",
-      "type": "Calls"
+      "type": "Requires"
     },
     {
       "id": 25,
-      "source": "0",
-      "target": "19",
-      "type": "Calls"
+      "source": "19",
+      "target": "21",
+      "type": "Requires"
     },
     {
       "id": 26,
-      "source": "22",
-      "target": "15",
-      "type": "Calls"
+      "source": "19",
+      "target": "9",
+      "type": "Prerequisite"
     },
     {
       "id": 27,
-      "source": "22",
-      "target": "16",
-      "type": "Calls"
-    },
-    {
-      "id": 28,
-      "source": "20",
-      "target": "18",
-      "type": "Calls"
+      "source": "14",
+      "target": "11",
+      "type": "Prerequisite"
     },
     {
       "id": 29,
-      "source": "20",
-      "target": "17",
-      "type": "Calls"
+      "source": "14",
+      "target": "28",
+      "type": "Prerequisite"
     },
     {
       "id": 30,
-      "source": "19",
-      "target": "12",
-      "type": "Calls"
+      "source": "14",
+      "target": "3",
+      "type": "Prerequisite"
     },
     {
       "id": 31,
-      "source": "19",
-      "target": "13",
-      "type": "Calls"
+      "source": "14",
+      "target": "2",
+      "type": "Prerequisite"
     },
     {
       "id": 32,
-      "source": "18",
-      "target": "14",
-      "type": "Calls"
+      "source": "14",
+      "target": "4",
+      "type": "Prerequisite"
     },
     {
       "id": 33,
-      "source": "17",
-      "target": "11",
-      "type": "Calls"
+      "source": "22",
+      "target": "14",
+      "type": "Prerequisite"
     },
     {
       "id": 34,
-      "source": "16",
-      "target": "10",
-      "type": "Calls"
-    },
-    {
-      "id": 35,
-      "source": "15",
-      "target": "9",
-      "type": "Calls"
-    },
-    {
-      "id": 36,
-      "source": "12",
-      "target": "21",
-      "type": "Calls"
-    },
-    {
-      "id": 37,
-      "source": "13",
-      "target": "8",
-      "type": "Calls"
-    },
-    {
-      "id": 38,
-      "source": "10",
-      "target": "7",
-      "type": "Calls"
-    },
-    {
-      "id": 39,
-      "source": "9",
-      "target": "6",
-      "type": "Calls"
-    },
-    {
-      "id": 40,
-      "source": "14",
-      "target": "5",
-      "type": "Calls"
-    },
-    {
-      "id": 41,
-      "source": "11",
-      "target": "4",
-      "type": "Calls"
-    },
-    {
-      "id": 42,
-      "source": "8",
-      "target": "3",
-      "type": "Calls"
-    },
-    {
-      "id": 45,
-      "source": "19",
-      "target": "44",
-      "type": "Calls"
-    },
-    {
-      "id": 46,
       "source": "22",
-      "target": "43",
-      "type": "Calls"
+      "target": "20",
+      "type": "Prerequisite"
     }
   ]
 }</textarea>
@@ -1233,4 +1115,5 @@ textarea {
     </div>
     
 
-<div style="font-family: &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-style: normal; font-size: 23.3023px; font-weight: normal; position: absolute; left: -9999px; top: -9999px; z-index: -1; visibility: hidden; pointer-events: none; padding: 0px; line-height: 1; white-space: normal;"></div></body></html>
+<div style="font-family: sans-serif; font-style: normal; font-size: 38.3294px; font-weight: normal; position: absolute; left: -9999px; top: -9999px; z-index: -1; visibility: hidden; pointer-events: none; padding: 0px; line-height: 1; white-space: pre;">S&amp;TM 
+Level 1 </div></body></html>

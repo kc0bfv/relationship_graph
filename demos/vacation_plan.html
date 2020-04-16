@@ -780,7 +780,7 @@ textarea {
         <h1>Relationship Graph</h1>
 
         <div id="json_save_area" class="subsection">
-            <input type="text" value="call_tree_demo" id="project_name" title="Project Name">
+            <input type="text" value="vacation_plan" id="project_name" title="Project Name">
             <input type="button" value="Save" onclick="err_wrap(save_file)">
         </div>
 
@@ -827,7 +827,7 @@ textarea {
     <div id="main-content">
     <div id="cytoscape_surround" class="section">
         <h2>Graph Area</h2>
-        <div id="cytoscape_area" class="section __________cytoscape_container" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 925px; height: 595px;"></div>
+        <div id="cytoscape_area" class="section __________cytoscape_container" style="-webkit-tap-highlight-color: rgba(0,0,0,0);"></div>
         <div id="cytoscape_view_controls" class="subsection">
             <input type="button" value="Heirarchical View" onclick="err_wrap(set_hierarchical)">
             <input type="button" value="Elastic Spring View" onclick="err_wrap(set_elastic_spring)">
@@ -838,12 +838,12 @@ textarea {
             <input type="button" value="Delete Selected" onclick="err_wrap(delete_selected)">
             <input type="button" value="Edit Node" onclick="err_wrap(edit_node)">
             <input type="button" value="Link Nodes" onclick="err_wrap(link_nodes)">
-            <label for="link_type_select">Link Type:</label><select id="link_type_select"><option value="Calls">Calls</option></select>
+            <label for="link_type_select">Link Type:</label><select id="link_type_select"><option value=""></option></select>
         </div>
     </div>
     <div id="node_form_surround" class="section">
         <h2>Node Area</h2>
-        <div id="add_node_form" class="subsection"><div><label>Node Label:</label><input type="text" id="node_label_entry" title="Node label, or name"></div><div><label>Node Type:</label><select id="node_type_entry"><option value=""></option><option value="Team Member">Team Member</option><option value="External Organization">External Organization</option></select></div><div><label>Cell Phone Number:</label><input type="text" id="node_cellphone_entry"></div><div><label>Work Phone Number:</label><input type="text" id="node_workphone_entry"></div><div><label>Address:</label><input type="text" id="node_address_entry"></div></div>
+        <div id="add_node_form" class="subsection"><div><label>Node Label:</label><input type="text" id="node_label_entry" title="Node label, or name"></div><div><label>Node Type:</label><select id="node_type_entry"><option value=""></option><option value="Transport Option">Transport Option</option><option value="Destination">Destination</option><option value="Activities">Activities</option><option value="Pros">Pros</option><option value="Cons">Cons</option><option value="Starting Location">Starting Location</option></select></div><div><label>Notes:</label><textarea cols="40" rows="10" id="node_notes_entry"></textarea></div></div>
         <div id="add_node_controls" class="subsection">
             <input type="button" value="Add Node" onclick="err_wrap(add_node)">
             <input type="button" value="Replace Selected" onclick="err_wrap(replace_selected_node)">
@@ -853,7 +853,7 @@ textarea {
     </div>
     <div id="json_surround" class="section">
         <h2>JSON Area</h2>
-        <details>
+        <details open="">
         <summary>Display JSON Editor</summary>
         <div id="json_vis_area" class="subsection">
             <div id="json_output" class="subsection">
@@ -861,363 +861,334 @@ textarea {
                 <textarea id="json_out_area" rows="20">{
   "schema": {
     "node_types": {
-      "Team Member": {
-        "color": "#39192C"
+      "Transport Option": {
+        "color": "navy"
       },
-      "External Organization": {
-        "color": "#2B2855"
+      "Destination": {
+        "color": "purple"
+      },
+      "Activities": {
+        "color": "yellow"
+      },
+      "Pros": {
+        "color": "green"
+      },
+      "Cons": {
+        "color": "maroon"
+      },
+      "Starting Location": {
+        "color": "lime"
       }
     },
     "node_fields": {
-      "cellphone": {
-        "nice_name": "Cell Phone Number"
-      },
-      "workphone": {
-        "nice_name": "Work Phone Number"
-      },
-      "address": {
-        "nice_name": "Address"
+      "notes": {
+        "size": "textarea",
+        "nice_name": "Notes"
       }
     },
     "edge_types": {
-      "Calls": {}
+      "": {}
     },
     "default_root_ids": [
-      1
+      0
     ]
   },
   "nodes": [
     {
       "id": 0,
-      "label": "Jaimee Cornelius",
-      "type": "Team Member",
-      "cellphone": "707-555-4210",
-      "workphone": "",
-      "address": ""
+      "label": "Home",
+      "type": "Starting Location",
+      "notes": ""
     },
     {
-      "id": "1",
-      "label": "Parent Organization",
-      "type": "External Organization",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": 1,
+      "label": "Fly from SLC",
+      "type": "Transport Option",
+      "notes": ""
     },
     {
-      "id": 3,
-      "label": "Delphine Cotton",
-      "type": "Team Member",
-      "cellphone": "707-555-4211",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 4,
-      "label": "Huey Montenegro",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": 2,
+      "label": "Fly from BOI",
+      "type": "Transport Option",
+      "notes": ""
     },
     {
       "id": 5,
-      "label": "Corrin Watts",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "Seattle",
+      "type": "Destination",
+      "notes": ""
     },
     {
       "id": 6,
-      "label": "Katelynn Laferriere",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "DC",
+      "type": "Destination",
+      "notes": ""
     },
     {
       "id": 7,
-      "label": "Wayne Hemmingway",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 8,
-      "label": "Martin Hohn",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 9,
-      "label": "Kasi Ellett",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 10,
-      "label": "Aisha Findlay",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "Minneapolis",
+      "type": "Destination",
+      "notes": ""
     },
     {
       "id": 11,
-      "label": "Judson Burkes",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "Train to Vancouver",
+      "type": "Transport Option",
+      "notes": ""
     },
     {
-      "id": 12,
-      "label": "Leeanna Provo",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": "12",
+      "label": "Ferry to Victoria",
+      "type": "Transport Option",
+      "notes": ""
     },
     {
       "id": 13,
-      "label": "Austin Folse",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "Vancouver",
+      "type": "Destination",
+      "notes": ""
     },
     {
       "id": 14,
-      "label": "Jeni Wolfgang",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 15,
-      "label": "Claud Bill",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 16,
-      "label": "Vanita Chevere",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 17,
-      "label": "Josef Brandes",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 18,
-      "label": "Lorinda Mcknight",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 19,
-      "label": "Garret Steedley",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "Victoria",
+      "type": "Destination",
+      "notes": ""
     },
     {
       "id": 20,
-      "label": "Rina Kuehner",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
-    },
-    {
-      "id": 21,
-      "label": "Ted Freund",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "Currently the off season",
+      "type": "Pros",
+      "notes": ""
     },
     {
       "id": 22,
-      "label": "Kenisha Saunders",
-      "type": "Team Member",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "label": "Christmas Market",
+      "type": "Activities",
+      "notes": ""
     },
     {
-      "id": 43,
-      "label": "Subcontract Manager",
-      "type": "External Organization",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": 24,
+      "label": "Capilano Suspension Bridge",
+      "type": "Activities",
+      "notes": ""
     },
     {
-      "id": 44,
-      "label": "Subcontract Manager",
-      "type": "External Organization",
-      "cellphone": "",
-      "workphone": "",
-      "address": ""
+      "id": 26,
+      "label": "See friends!",
+      "type": "Pros",
+      "notes": ""
+    },
+    {
+      "id": 28,
+      "label": "Already been there a lot...",
+      "type": "Cons",
+      "notes": ""
+    },
+    {
+      "id": 30,
+      "label": "Isn't it cold there?",
+      "type": "Cons",
+      "notes": ""
+    },
+    {
+      "id": "32",
+      "label": "Never been here",
+      "type": "Pros",
+      "notes": ""
+    },
+    {
+      "id": 37,
+      "label": "BC Museum and Capital",
+      "type": "Activities",
+      "notes": ""
+    },
+    {
+      "id": 39,
+      "label": "Oldest Chinatown in Canada?",
+      "type": "Activities",
+      "notes": ""
+    },
+    {
+      "id": "41",
+      "label": "Rain",
+      "type": "Pros",
+      "notes": "It's kinda nice for a short period"
+    },
+    {
+      "id": 45,
+      "label": "Great Food",
+      "type": "Activities",
+      "notes": ""
     }
   ],
   "edges": [
     {
-      "id": 2,
+      "id": 3,
+      "source": "0",
+      "target": "1",
+      "type": ""
+    },
+    {
+      "id": 4,
+      "source": "0",
+      "target": "2",
+      "type": ""
+    },
+    {
+      "id": 8,
       "source": "1",
-      "target": "0",
-      "type": "Calls"
+      "target": "6",
+      "type": ""
+    },
+    {
+      "id": 9,
+      "source": "1",
+      "target": "7",
+      "type": ""
+    },
+    {
+      "id": 10,
+      "source": "2",
+      "target": "5",
+      "type": ""
+    },
+    {
+      "id": 15,
+      "source": "5",
+      "target": "12",
+      "type": ""
+    },
+    {
+      "id": 16,
+      "source": "13",
+      "target": "12",
+      "type": ""
+    },
+    {
+      "id": 17,
+      "source": "5",
+      "target": "11",
+      "type": ""
+    },
+    {
+      "id": 18,
+      "source": "12",
+      "target": "14",
+      "type": ""
+    },
+    {
+      "id": 19,
+      "source": "11",
+      "target": "13",
+      "type": ""
+    },
+    {
+      "id": 21,
+      "source": "14",
+      "target": "20",
+      "type": ""
     },
     {
       "id": 23,
-      "source": "0",
-      "target": "20",
-      "type": "Calls"
-    },
-    {
-      "id": 24,
-      "source": "0",
+      "source": "13",
       "target": "22",
-      "type": "Calls"
+      "type": ""
     },
     {
       "id": 25,
-      "source": "0",
-      "target": "19",
-      "type": "Calls"
-    },
-    {
-      "id": 26,
-      "source": "22",
-      "target": "15",
-      "type": "Calls"
+      "source": "13",
+      "target": "24",
+      "type": ""
     },
     {
       "id": 27,
-      "source": "22",
-      "target": "16",
-      "type": "Calls"
-    },
-    {
-      "id": 28,
-      "source": "20",
-      "target": "18",
-      "type": "Calls"
+      "source": "6",
+      "target": "26",
+      "type": ""
     },
     {
       "id": 29,
-      "source": "20",
-      "target": "17",
-      "type": "Calls"
-    },
-    {
-      "id": 30,
-      "source": "19",
-      "target": "12",
-      "type": "Calls"
+      "source": "6",
+      "target": "28",
+      "type": ""
     },
     {
       "id": 31,
-      "source": "19",
-      "target": "13",
-      "type": "Calls"
-    },
-    {
-      "id": 32,
-      "source": "18",
-      "target": "14",
-      "type": "Calls"
+      "source": "7",
+      "target": "30",
+      "type": ""
     },
     {
       "id": 33,
-      "source": "17",
-      "target": "11",
-      "type": "Calls"
+      "source": "14",
+      "target": "32",
+      "type": ""
     },
     {
       "id": 34,
-      "source": "16",
-      "target": "10",
-      "type": "Calls"
+      "source": "13",
+      "target": "32",
+      "type": ""
     },
     {
       "id": 35,
-      "source": "15",
-      "target": "9",
-      "type": "Calls"
+      "source": "7",
+      "target": "32",
+      "type": ""
     },
     {
       "id": 36,
-      "source": "12",
-      "target": "21",
-      "type": "Calls"
-    },
-    {
-      "id": 37,
-      "source": "13",
-      "target": "8",
-      "type": "Calls"
+      "source": "5",
+      "target": "32",
+      "type": ""
     },
     {
       "id": 38,
-      "source": "10",
-      "target": "7",
-      "type": "Calls"
-    },
-    {
-      "id": 39,
-      "source": "9",
-      "target": "6",
-      "type": "Calls"
+      "source": "14",
+      "target": "37",
+      "type": ""
     },
     {
       "id": 40,
       "source": "14",
-      "target": "5",
-      "type": "Calls"
-    },
-    {
-      "id": 41,
-      "source": "11",
-      "target": "4",
-      "type": "Calls"
+      "target": "39",
+      "type": ""
     },
     {
       "id": 42,
-      "source": "8",
-      "target": "3",
-      "type": "Calls"
+      "source": "5",
+      "target": "41",
+      "type": ""
     },
     {
-      "id": 45,
-      "source": "19",
-      "target": "44",
-      "type": "Calls"
+      "id": 43,
+      "source": "13",
+      "target": "41",
+      "type": ""
+    },
+    {
+      "id": 44,
+      "source": "14",
+      "target": "41",
+      "type": ""
     },
     {
       "id": 46,
-      "source": "22",
-      "target": "43",
-      "type": "Calls"
+      "source": "13",
+      "target": "45",
+      "type": ""
+    },
+    {
+      "id": 47,
+      "source": "5",
+      "target": "45",
+      "type": ""
+    },
+    {
+      "id": 48,
+      "source": "6",
+      "target": "45",
+      "type": ""
     }
   ]
 }</textarea>
@@ -1233,4 +1204,4 @@ textarea {
     </div>
     
 
-<div style="font-family: &quot;Helvetica Neue&quot;, Helvetica, sans-serif; font-style: normal; font-size: 23.3023px; font-weight: normal; position: absolute; left: -9999px; top: -9999px; z-index: -1; visibility: hidden; pointer-events: none; padding: 0px; line-height: 1; white-space: normal;"></div></body></html>
+<div style="font-family: sans-serif; font-style: normal; font-size: 23.6038px; font-weight: normal; position: absolute; left: -9999px; top: -9999px; z-index: -1; visibility: hidden; pointer-events: none; padding: 0px; line-height: 1; white-space: pre;">Great Food</div></body></html>

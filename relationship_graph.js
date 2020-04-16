@@ -249,6 +249,7 @@ function start_cy() {
     window.GLOBAL_cytoscape.on("unselect", "node", cy_node_unselect);
     window.GLOBAL_cytoscape.on("select", "edge", cy_edge_select);
     window.GLOBAL_cytoscape.on("unselect", "edge", cy_edge_unselect);
+    window.GLOBAL_cytoscape.on("zoom", zoom_handler);
 }
 
 function clear_cy_nodes_edges() {
@@ -286,6 +287,9 @@ function cy_node_unselect(in_event) {
         window.GLOBAL_selected_nodes = [];
         window.GLOBAL_selected_edges = [];
     }
+}
+function zoom_handler(in_event) {
+    window.GLOBAL_cytoscape.style().update();
 }
 
 function get_selected_edges() {
@@ -600,10 +604,20 @@ function get_cy_style() {
                     "height": "30px",
                     "padding": "50px",
                     "text-valign": "center",
-                    "color": "white",
-                    "text-outline-color": "black",
+                    "color": "black",
+                    "text-outline-color": "white",
                     "text-outline-opacity": ".8",
-                    "text-outline-width": "1",
+                    "text-outline-width": "2",
+                    "text-background-color": "white",
+                    "text-background-padding": "1px",
+                    "text-background-shape": "roundrectangle",
+                    "text-background-opacity": ".4",
+                    "text-wrap": "wrap",
+                    "text-max-width": "200px",
+                    "font-family": "sans-serif",
+                    "font-size": function() {
+                            return "" + 1/GLOBAL_cytoscape.zoom() + "em";
+                        },
                 }
         },
         {
@@ -622,10 +636,13 @@ function get_cy_style() {
                     "curve-style": "straight",
                     "target-arrow-shape": "triangle",
                     "compound-sizing-wrt-labels": "include",
-                    "color": "white",
-                    "text-outline-color": "black",
-                    "text-outline-opacity": ".8",
-                    "text-outline-width": "1",
+                    "color": "black",
+                    "text-outline-color": "white",
+                    "text-outline-opacity": ".5",
+                    "text-outline-width": "2",
+                    "font-size": function() {
+                            return "" + 1/GLOBAL_cytoscape.zoom() + "em";
+                        },
                 }
         }];
     return style;

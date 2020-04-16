@@ -1,3 +1,5 @@
 #cytoscape_area {
     height: 400px;
+    resize: both;
+    overflow: hidden;
 }

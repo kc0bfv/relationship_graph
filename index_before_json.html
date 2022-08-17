@@ -1,0 +1,89 @@
+        </style>
+    </head>
+    <body onload="err_wrap(after_load)">
+    <div id="main-body">
+    <div id="header">
+        <h1>Relationship Graph</h1>
+
+        <div id="json_save_area" class="subsection">
+            <input type="text" value="project_name" id="project_name" title="Project Name">
+            <input type="button" value="Save" onclick="err_wrap(save_file)">
+        </div>
+
+        <details class="clear-div">
+            <summary>Help</summary>
+            <div class="help_section">
+                <h3>Usage</h3>
+                <h4>Adding Nodes</h4>
+                <p>Scroll down to the node area to create new graph nodes.  Set a label and a type, add notes if you wish.  Then click "add node".</p>
+                <h4>Browsing Nodes</h4>
+                <p>Drag around the graph area, and zoom, just like you might use Google Maps.  Click on a node then click "edit node" to see all its info down in the node area.  If the nodes go out of view in the graph area, click one of the view buttons to make them visible again.</p>
+                <h4>Editing Nodes</h4>
+                <p>Select the node to edit in the graph area, then click "edit node".  Make changes in the node area.  While the node is still selected, click "replace selected".</p>
+                <h4>Linking Nodes</h4>
+                <p>Links are directional.  In the node area select the start node, then hold the "Ctrl" key and select the destination node.  Use the "link type" dropdown to select a link type, then click "link nodes".</p>
+                <h4>Saving Graphs</h4>
+                <p>Enter a project name in the top left box, then click "save".  Your browser should download an HTML file.  Double-clicking that downloaded file will reopen the graph file.  Graph data is saved, but the graph layout is not saved.</p>
+                <h4>Hierarchical View</h4>
+                <p>Select the node you wish to see at the top of your hierarchy, then click "Hierarchical View".</p>
+                <h4>Finding Nodes</h4>
+                <p>Enter the information you wish to find in the relevant fields of the node area then click "Find Matching".  Only the fields you enter data in will be searched, and the nodes must match all data.  Found nodes will look selected in the graph area.</p>
+                <h4>Changing Node Data Fields, Node Types, and Link Types</h4>
+                <p>This is all controlled via the data schema, which is editable in the JSON area.  First, click "build JSON" to incorporate all graph data into the JSON area.  Then modify the JSON schema.  The schema format is given in the <a href="https://github.com/kc0bfv/relationship_graph#json-format-details">Relationship Graph source code README</a>.</p>
+            </div>
+            <div class="help_section">
+                <h3>Offline Usage</h3>
+                <p>All save files are entirely self-contained.  That is, they require no external resources.  Any save file may be used offline.  If you want a blank file for creating new graphs offline, simply save the file before entering any nodes.</p>
+            </div>
+            <div class="help_section">
+                <h3>Updating</h3>
+                <p>All your data is saved in the JSON format.  This format is easy to parse in JavaScript, and can be changed into other formats as necessary.  If you wish to use a new version of the Relationship Graph tool, use the JSON area to build your JSON, then copy it out of your version of the tool and paste it into the JSON area in a new version.  Click "ingest JSON" to complete the process.</p>
+            </div>
+            <div class="help_section">
+                <h3>Privacy</h3>
+                <p>This tool requires no external resources and makes no external requests.  Therefore, it makes no invasion on your privacy.  Protect your save file and nobody will have access to your data.  You may verify these statements by using your browser's developer utilities to view network traffic - you will see that only one file is loaded and no further requests occur.  You may also verify these statements by using the tool entirely in offline mode, or disconnected from the Internet.  It will work fully.</p>
+                <p>The tool does not encrypt your data.  To maintain the privacy of your data, protect your save files.</p>
+            </div>
+            <div class="help_section">
+                <h3>About</h3>
+                <p>Created by kc0bfv.  <a href="https://github.com/kc0bfv/relationship_graph">Source code available on Github</a>.  Color scheme by <a href="https://sarahfinley.com">his wife</a> and <a href="https://dinosaurstew.com/color-palettes/">Dinosaur Stew</a>.  Relies heavily on <a href="https://js.cytoscape.org/">Cytoscape</a> - thank you to them.  Save feature inspired by <a href="https://tiddlywiki.com/">TiddlyWiki</a>.</p>
+            </div>
+        </details>
+    </div>
+    <div id="main-content">
+    <div id="cytoscape_surround" class="section">
+        <h2>Graph Area</h2>
+        <div id="cytoscape_area" class="section">
+        </div>
+        <div id="cytoscape_view_controls" class="subsection">
+            <input type="button" value="Heirarchical View" onclick="err_wrap(set_hierarchical)">
+            <input type="button" value="Elastic Spring View" onclick="err_wrap(set_elastic_spring)">
+            <input type="button" value="Fit View" onclick="err_wrap(set_fit_view)">
+            <input type="button" value="Export to PNG" onclick="err_wrap(export_to_png)">
+        </div>
+        <div id="cytoscape_edit_controls" class="subsection">
+            <input type="button" value="Delete Selected" onclick="err_wrap(delete_selected)">
+            <input type="button" value="Edit Node" onclick="err_wrap(edit_node)">
+            <input type="button" value="Link Nodes" onclick="err_wrap(link_nodes)">
+            <label for="link_type_select">Link Type:</label><select id="link_type_select"></select>
+        </div>
+    </div>
+    <div id="node_form_surround" class="section">
+        <h2>Node Area</h2>
+        <div id="add_node_form" class="subsection">
+        </div>
+        <div id="add_node_controls" class="subsection">
+            <input type="button" value="Add Node" onclick="err_wrap(add_node)">
+            <input type="button" value="Replace Selected" onclick="err_wrap(replace_selected_node)">
+            <input type="button" value="Find Matching" onclick="err_wrap(select_matching_nodes)">
+            <input type="button" value="Clear Data" onclick="err_wrap(clear_node_input_form)">
+        </div>
+    </div>
+    <div id="json_surround" class="section">
+        <h2>JSON Area</h2>
+        <details>
+        <summary>Display JSON Editor</summary>
+        <div id="json_vis_area" class="subsection">
+            <div id="json_output" class="subsection">
+                <label for="json_out_area">JSON:</label>
+                <textarea id="json_out_area" rows="20">

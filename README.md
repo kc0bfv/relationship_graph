@@ -20,7 +20,9 @@ Usage instructions are available under "Help", at the top of the tool.
 ## JSON Format Details
 Your data is stored inside a copy of the page.  It gets represented as JSON when you save or "build JSON".
 
-The JSON is an object with three keys: schema, nodes, and edges.  Schema is an object described below, nodes is a list of nodes, and edges is a list of edges.  Add some edges and nodes and click "build JSON" to see how the nodes and edges lists work.
+The JSON is an object with four keys: schema, nodes, edges, and view.  Schema and view are objects described below, nodes is a list of nodes, and edges is a list of edges.  Add some edges and nodes and click "build JSON" to see how the nodes and edges lists work.
+
+Nodes now can include an "x" and "y" value in a "renderedPosition" object, and those correspond to the position as rendered, as returned by Cytoscape.
 
 ```
 schema_object := {"node_types": node_types_object, "node_fields": node_fields_object, "edge_types": edge_types_object, "default_root_ids": root_ids_list}
@@ -41,6 +43,13 @@ edge_type_name := A string, any valid JSON key values permitted, that becomes a 
 edge_type_object := {}
 
 root_ids_list := A list of the id numbers of nodes to use as the hierarchical root when no other root is selected.
+```
+
+```
+view_object := {"zoom": zoom_value, "pan": pan_value, "display_only": display_value}
+zoom_value : A float, the Cytoscape viewport zoom value as returned by Cytoscape
+pan_value : A float, the Cytoscape viewport pan value as returned by Cytoscape
+display_value : A boolean, true if the graph should be shown "display only", or false if it should provide the editing interface.
 ```
 
 Unexpected keys and values in the schema objects should be ignored, and missing ones get default values.  Thus, schema setup can improve over time.

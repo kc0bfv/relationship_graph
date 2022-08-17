@@ -81,3 +81,9 @@ textarea, input, select {
 textarea {
     width: 100%;
 }
+body.display_only .section, body.display_only .subsection, body.display_only #header, body.display_only #graph_area_header {
+    display: none;
+}
+body.display_only #cytoscape_surround, body.display_only #cytoscape_area {
+    display: block;
+}

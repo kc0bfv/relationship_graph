@@ -86,7 +86,6 @@ function set_hierarchical() {
                 return "node" + get_cy_elem_selector_by_id(elem_id);
             });
         breadthfirst["roots"] = id_sels.join(", ");
-        //console.log("Calculated " + breadthfirst["roots"]);
     } else {
         breadthfirst["roots"] = ":selected";
     }
@@ -146,8 +145,16 @@ function save_file() {
 }
 
 function export_to_png() {
-    const png_dat = GLOBAL_cytoscape.png();
+    const png_dat = window.GLOBAL_cytoscape.png();
     save_url(png_dat, "graph");
+}
+
+function toggle_additive() {
+    if( window.GLOBAL_cytoscape.selectionType() != "additive" ) {
+        window.GLOBAL_cytoscape.selectionType("additive");
+    } else {
+        window.GLOBAL_cytoscape.selectionType("single");
+    }
 }
 
 
@@ -158,14 +165,21 @@ function cy_to_json() {
             "schema": get_graph_schema(),
             "nodes": window.GLOBAL_cytoscape.$("node").map(
                     function(elem) {
-                        return elem.scratch()["raw_dat"];
+                        let ret_val = elem.scratch()["raw_dat"];
+                        ret_val["renderedPosition"] = elem.renderedPosition();
+                        return ret_val;
                     }
                 ),
             "edges": window.GLOBAL_cytoscape.$("edge").map(
                     function(elem) {
                         return elem.scratch()["raw_dat"];
                     }
-                )
+                ),
+            "view": {
+                "zoom": window.GLOBAL_cytoscape.zoom(),
+                "pan": window.GLOBAL_cytoscape.pan(),
+                "display_only": get_display_only()
+            }
         };
     new_json = JSON.stringify(json_obj, null, 2);
     json_out_area.innerHTML = new_json;
@@ -189,12 +203,27 @@ function json_to_cy() {
     cur_json.innerHTML = cur_json;
 
     clear_cy_nodes_edges();
+    window.GLOBAL_cytoscape.reset()
+
     set_graph_schema(cur_json["schema"]);
     build_input_forms();
+
+    if( cur_json["view"] !== undefined ) {
+        window.GLOBAL_cytoscape.zoom(cur_json["view"]["zoom"]);
+        window.GLOBAL_cytoscape.pan(cur_json["view"]["pan"]);
+        set_display_only(cur_json["view"]["display_only"]);
+    } else {
+        set_display_only(false);
+    }
+
     add_node_array(cur_json["nodes"]);
     add_edge_array(cur_json["edges"]);
 
-    set_hierarchical();
+    if( cur_json["view"] !== undefined ) {
+        window.GLOBAL_cytoscape.fit();
+    } else {
+        set_hierarchical();
+    }
 }
 
 function validate_json(cur_json) {
@@ -217,6 +246,18 @@ function validate_json(cur_json) {
 
 function err_wrap(func) {
     try { func(); } catch(error) { alert("ERROR:\n" + error); }
+}
+
+function get_display_only() {
+    return window.document.body.classList.contains("display_only");
+}
+
+function set_display_only(value) {
+    if( value === true ) {
+        window.document.body.classList.add("display_only");
+    } else {
+        window.document.body.classList.remove("display_only");
+    }
 }
 
 function add_node_array(node_data_array) {
@@ -521,7 +562,6 @@ function build_cy_node_selector(node_data) {
                 return prev + cur;
             }
         );
-    console.log(selector);
     return selector;
 }
 
@@ -539,7 +579,8 @@ function build_cy_node(node_data) {
             "scratch": {
                     "raw_dat": node_data
                 },
-            "grabbable": true
+            "grabbable": true,
+            "renderedPosition": node_data["renderedPosition"]
         };
     return cy_node;
 }
@@ -616,7 +657,7 @@ function get_cy_style() {
                     "text-max-width": "200px",
                     "font-family": "sans-serif",
                     "font-size": function() {
-                            return "" + 1/GLOBAL_cytoscape.zoom() + "em";
+                            return "" + 1 / window.GLOBAL_cytoscape.zoom() + "em";
                         },
                 }
         },
@@ -641,7 +682,7 @@ function get_cy_style() {
                     "text-outline-opacity": ".5",
                     "text-outline-width": "2",
                     "font-size": function() {
-                            return "" + 1/GLOBAL_cytoscape.zoom() + "em";
+                            return "" + 1 / window.GLOBAL_cytoscape.zoom() + "em";
                         },
                 }
         }];
@@ -651,7 +692,23 @@ function get_cy_style() {
 // Globals Management
 // TODO: avoid globals
 function set_graph_schema(schema) {
-    window.GLOBAL_graph_schema = schema;
+    let base_schema = {
+        "node_types": {},
+        "node_fields": {},
+        "edge_types": {},
+        "default_root_ids": []
+    };
+
+    let out_schema = {};
+    Object.keys(base_schema).forEach(function(key) {
+        if( schema === undefined || schema[key] === undefined ) {
+            out_schema[key] = base_schema[key];
+        } else {
+            out_schema[key] = schema[key];
+        }
+    });
+
+    window.GLOBAL_graph_schema = out_schema;
 }
 function get_graph_schema(schema) {
     return window.GLOBAL_graph_schema;

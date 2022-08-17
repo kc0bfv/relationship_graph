@@ -114,7 +114,6 @@ function set_hierarchical() {
                 return "node" + get_cy_elem_selector_by_id(elem_id);
             });
         breadthfirst["roots"] = id_sels.join(", ");
-        //console.log("Calculated " + breadthfirst["roots"]);
     } else {
         breadthfirst["roots"] = ":selected";
     }
@@ -174,8 +173,16 @@ function save_file() {
 }
 
 function export_to_png() {
-    const png_dat = GLOBAL_cytoscape.png();
+    const png_dat = window.GLOBAL_cytoscape.png();
     save_url(png_dat, "graph");
+}
+
+function toggle_additive() {
+    if( window.GLOBAL_cytoscape.selectionType() != "additive" ) {
+        window.GLOBAL_cytoscape.selectionType("additive");
+    } else {
+        window.GLOBAL_cytoscape.selectionType("single");
+    }
 }
 
 
@@ -186,14 +193,21 @@ function cy_to_json() {
             "schema": get_graph_schema(),
             "nodes": window.GLOBAL_cytoscape.$("node").map(
                     function(elem) {
-                        return elem.scratch()["raw_dat"];
+                        let ret_val = elem.scratch()["raw_dat"];
+                        ret_val["renderedPosition"] = elem.renderedPosition();
+                        return ret_val;
                     }
                 ),
             "edges": window.GLOBAL_cytoscape.$("edge").map(
                     function(elem) {
                         return elem.scratch()["raw_dat"];
                     }
-                )
+                ),
+            "view": {
+                "zoom": window.GLOBAL_cytoscape.zoom(),
+                "pan": window.GLOBAL_cytoscape.pan(),
+                "display_only": get_display_only()
+            }
         };
     new_json = JSON.stringify(json_obj, null, 2);
     json_out_area.innerHTML = new_json;
@@ -217,12 +231,27 @@ function json_to_cy() {
     cur_json.innerHTML = cur_json;
 
     clear_cy_nodes_edges();
+    window.GLOBAL_cytoscape.reset()
+
     set_graph_schema(cur_json["schema"]);
     build_input_forms();
+
+    if( cur_json["view"] !== undefined ) {
+        window.GLOBAL_cytoscape.zoom(cur_json["view"]["zoom"]);
+        window.GLOBAL_cytoscape.pan(cur_json["view"]["pan"]);
+        set_display_only(cur_json["view"]["display_only"]);
+    } else {
+        set_display_only(false);
+    }
+
     add_node_array(cur_json["nodes"]);
     add_edge_array(cur_json["edges"]);
 
-    set_hierarchical();
+    if( cur_json["view"] !== undefined ) {
+        window.GLOBAL_cytoscape.fit();
+    } else {
+        set_hierarchical();
+    }
 }
 
 function validate_json(cur_json) {
@@ -245,6 +274,18 @@ function validate_json(cur_json) {
 
 function err_wrap(func) {
     try { func(); } catch(error) { alert("ERROR:\n" + error); }
+}
+
+function get_display_only() {
+    return window.document.body.classList.contains("display_only");
+}
+
+function set_display_only(value) {
+    if( value === true ) {
+        window.document.body.classList.add("display_only");
+    } else {
+        window.document.body.classList.remove("display_only");
+    }
 }
 
 function add_node_array(node_data_array) {
@@ -549,7 +590,6 @@ function build_cy_node_selector(node_data) {
                 return prev + cur;
             }
         );
-    console.log(selector);
     return selector;
 }
 
@@ -567,7 +607,8 @@ function build_cy_node(node_data) {
             "scratch": {
                     "raw_dat": node_data
                 },
-            "grabbable": true
+            "grabbable": true,
+            "renderedPosition": node_data["renderedPosition"]
         };
     return cy_node;
 }
@@ -644,7 +685,7 @@ function get_cy_style() {
                     "text-max-width": "200px",
                     "font-family": "sans-serif",
                     "font-size": function() {
-                            return "" + 1/GLOBAL_cytoscape.zoom() + "em";
+                            return "" + 1 / window.GLOBAL_cytoscape.zoom() + "em";
                         },
                 }
         },
@@ -669,7 +710,7 @@ function get_cy_style() {
                     "text-outline-opacity": ".5",
                     "text-outline-width": "2",
                     "font-size": function() {
-                            return "" + 1/GLOBAL_cytoscape.zoom() + "em";
+                            return "" + 1 / window.GLOBAL_cytoscape.zoom() + "em";
                         },
                 }
         }];
@@ -679,7 +720,23 @@ function get_cy_style() {
 // Globals Management
 // TODO: avoid globals
 function set_graph_schema(schema) {
-    window.GLOBAL_graph_schema = schema;
+    let base_schema = {
+        "node_types": {},
+        "node_fields": {},
+        "edge_types": {},
+        "default_root_ids": []
+    };
+
+    let out_schema = {};
+    Object.keys(base_schema).forEach(function(key) {
+        if( schema === undefined || schema[key] === undefined ) {
+            out_schema[key] = base_schema[key];
+        } else {
+            out_schema[key] = schema[key];
+        }
+    });
+
+    window.GLOBAL_graph_schema = out_schema;
 }
 function get_graph_schema(schema) {
     return window.GLOBAL_graph_schema;
@@ -774,6 +831,12 @@ textarea, input, select {
 textarea {
     width: 100%;
 }
+body.display_only .section, body.display_only .subsection, body.display_only #header, body.display_only #graph_area_header {
+    display: none;
+}
+body.display_only #cytoscape_surround, body.display_only #cytoscape_area {
+    display: block;
+}
         </style>
     </head>
     <body onload="err_wrap(after_load)">
@@ -828,7 +891,7 @@ textarea {
     </div>
     <div id="main-content">
     <div id="cytoscape_surround" class="section">
-        <h2>Graph Area</h2>
+        <h2 id="graph_area_header">Graph Area</h2>
         <div id="cytoscape_area" class="section">
         </div>
         <div id="cytoscape_view_controls" class="subsection">
@@ -836,7 +899,8 @@ textarea {
             <input type="button" value="Elastic Spring View" onclick="err_wrap(set_elastic_spring)">
             <input type="button" value="Fit View" onclick="err_wrap(set_fit_view)">
             <input type="button" value="Export to PNG" onclick="err_wrap(export_to_png)">
-        </div>
+            <input type="button" value="Toggle Additive Selection" onclick="err_wrap(toggle_additive)">
+            </div>
         <div id="cytoscape_edit_controls" class="subsection">
             <input type="button" value="Delete Selected" onclick="err_wrap(delete_selected)">
             <input type="button" value="Edit Node" onclick="err_wrap(edit_node)">
@@ -899,12 +963,309 @@ textarea {
       "Principal Investigator": {},
       "Researcher": {}
     },
-    "default_root_ids": []
+    "default_root_ids": [0, 6]
   },
-  "nodes": [],
-  "edges": []
-}
-                </textarea>
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Overall Management",
+      "type": "INL Team",
+      "notes": "",
+      "renderedPosition": {
+        "x": 603.677979438942,
+        "y": 225.12664820918704
+      }
+    },
+    {
+      "id": "1",
+      "label": "Sub Team 1",
+      "type": "INL Team",
+      "notes": "",
+      "renderedPosition": {
+        "x": 591.0457592883611,
+        "y": 159.66376327699697
+      }
+    },
+    {
+      "id": "2",
+      "label": "Sub Team 2",
+      "type": "INL Team",
+      "notes": "",
+      "renderedPosition": {
+        "x": 669.4646510875044,
+        "y": 246.35782649828906
+      }
+    },
+    {
+      "id": 3,
+      "label": "Eng Team 1",
+      "type": "INL Team",
+      "notes": "",
+      "renderedPosition": {
+        "x": 647.6097681447474,
+        "y": 108.84886925497347
+      }
+    },
+    {
+      "id": 4,
+      "label": "Eng Team 2",
+      "type": "INL Team",
+      "notes": "",
+      "renderedPosition": {
+        "x": 525.6394299848783,
+        "y": 164.3822528737325
+      }
+    },
+    {
+      "id": 5,
+      "label": "Eng Team 3",
+      "type": "INL Team",
+      "notes": "",
+      "renderedPosition": {
+        "x": 611.3423262875302,
+        "y": 291.02564162454075
+      }
+    },
+    {
+      "id": 6,
+      "label": "Big Boss",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 664.356435799584,
+        "y": 180.4057283780846
+      }
+    },
+    {
+      "id": 7,
+      "label": "Boss of Sub Team 1",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 558.0669225648663,
+        "y": 93.76482013029697
+      }
+    },
+    {
+      "id": 8,
+      "label": "Boss of Sub Team 2",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 734.8083879631854,
+        "y": 267.82482748401503
+      }
+    },
+    {
+      "id": 9,
+      "label": "Eng Team 1 Lead",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 692.7776688410693,
+        "y": 48.957293785629915
+      }
+    },
+    {
+      "id": 10,
+      "label": "Eng Team 2 Lead",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 461.37908132266887,
+        "y": 124.50742956556154
+      }
+    },
+    {
+      "id": 11,
+      "label": "Eng Team 3 Lead",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 545.6191185431958,
+        "y": 296.00675425256054
+      }
+    },
+    {
+      "id": 12,
+      "label": "Researcher 1",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 626.6619628826609,
+        "y": 43.60824982372021
+      }
+    },
+    {
+      "id": 13,
+      "label": "Researcher 2",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 528.3275361841419,
+        "y": 229.9219709491282
+      }
+    },
+    {
+      "id": 14,
+      "label": "Researcher 3",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 607.4611783157789,
+        "y": 356.3917501762798
+      }
+    },
+    {
+      "id": 15,
+      "label": "Researcher 4",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 713.2496719575911,
+        "y": 114.76250389953465
+      }
+    },
+    {
+      "id": 16,
+      "label": "Researcher 5",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 462.3612482722475,
+        "y": 205.69241670226103
+      }
+    },
+    {
+      "id": 17,
+      "label": "Researcher 6",
+      "type": "INL Member",
+      "notes": "",
+      "renderedPosition": {
+        "x": 673.1064881118682,
+        "y": 333.7938280305879
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": 26,
+      "source": "11",
+      "target": "5",
+      "type": "Principal Investigator"
+    },
+    {
+      "id": 31,
+      "source": "1",
+      "target": "4",
+      "type": "Manages"
+    },
+    {
+      "id": 20,
+      "source": "0",
+      "target": "5",
+      "type": "Manages"
+    },
+    {
+      "id": 27,
+      "source": "7",
+      "target": "1",
+      "type": "Manages"
+    },
+    {
+      "id": 29,
+      "source": "1",
+      "target": "3",
+      "type": "Manages"
+    },
+    {
+      "id": 23,
+      "source": "6",
+      "target": "0",
+      "type": "Manages"
+    },
+    {
+      "id": 24,
+      "source": "9",
+      "target": "3",
+      "type": "Principal Investigator"
+    },
+    {
+      "id": 25,
+      "source": "10",
+      "target": "4",
+      "type": "Principal Investigator"
+    },
+    {
+      "id": 28,
+      "source": "0",
+      "target": "1",
+      "type": "Manages"
+    },
+    {
+      "id": 30,
+      "source": "0",
+      "target": "2",
+      "type": "Manages"
+    },
+    {
+      "id": 32,
+      "source": "2",
+      "target": "5",
+      "type": "Manages"
+    },
+    {
+      "id": 33,
+      "source": "8",
+      "target": "2",
+      "type": "Manages"
+    },
+    {
+      "id": 34,
+      "source": "12",
+      "target": "3",
+      "type": "Researcher"
+    },
+    {
+      "id": 35,
+      "source": "13",
+      "target": "4",
+      "type": "Researcher"
+    },
+    {
+      "id": 36,
+      "source": "14",
+      "target": "5",
+      "type": "Researcher"
+    },
+    {
+      "id": 37,
+      "source": "15",
+      "target": "3",
+      "type": "Researcher"
+    },
+    {
+      "id": 38,
+      "source": "16",
+      "target": "4",
+      "type": "Researcher"
+    },
+    {
+      "id": 39,
+      "source": "17",
+      "target": "5",
+      "type": "Researcher"
+    }
+  ],
+  "view": {
+    "zoom": 0.25249465052107134,
+    "pan": {
+      "x": 363.14234103533045,
+      "y": 97.44288726658283
+    },
+    "display_only": false
+  }
+}                </textarea>
             </div>
             <div id="json_controls" class="subsection">
                 <input type="button" value="Build JSON" onclick="err_wrap(build_json)">

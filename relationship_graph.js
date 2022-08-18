@@ -291,6 +291,7 @@ function start_cy() {
     window.GLOBAL_cytoscape.on("select", "edge", cy_edge_select);
     window.GLOBAL_cytoscape.on("unselect", "edge", cy_edge_unselect);
     window.GLOBAL_cytoscape.on("zoom", zoom_handler);
+    window.GLOBAL_cytoscape.on("dbltap", cy_node_doubleclick);
 }
 
 function clear_cy_nodes_edges() {
@@ -310,6 +311,9 @@ function node_to_top_left(node_id) {
 
 function get_selected_nodes() {
     return window.GLOBAL_selected_nodes;
+}
+function cy_node_doubleclick(in_event) {
+    set_hierarchical();
 }
 function cy_node_select(in_event) {
     window.GLOBAL_selected_nodes.push(in_event.target.id());

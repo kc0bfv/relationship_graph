@@ -604,7 +604,8 @@ function build_cy_edge(edge_data) {
             "id": edge_data["id"],
             "source": edge_data["source"],
             "target": edge_data["target"],
-            "label": build_edge_cy_label(edge_data)
+            "label": build_edge_cy_label(edge_data),
+            "line-color": "black"
         };
     var cy_edge = {
             "group": "edges",
@@ -661,7 +662,9 @@ function get_cy_style() {
                     "text-max-width": "200px",
                     "font-family": "sans-serif",
                     "font-size": function() {
-                            return "" + 1 / window.GLOBAL_cytoscape.zoom() + "em";
+                            const init_size = 1 / window.GLOBAL_cytoscape.zoom();
+                            const size = init_size > 4 ? 4 : init_size;
+                            return "" + size + "em";
                         },
                 }
         },
@@ -677,16 +680,28 @@ function get_cy_style() {
             selector: "edge",
             style: {
                     "label": "data(label)",
-                    "width": 2,
                     "curve-style": "straight",
                     "target-arrow-shape": "triangle",
                     "compound-sizing-wrt-labels": "include",
+                    "line-color": "data(line-color)",
                     "color": "black",
                     "text-outline-color": "white",
                     "text-outline-opacity": ".5",
                     "text-outline-width": "2",
+                    "width": function() {
+                            const init_size = 1 / window.GLOBAL_cytoscape.zoom();
+                            const size = init_size > 4 ? 4 : init_size;
+                            return "" + size;
+                        },
+                    "arrow-scale": function() {
+                            const init_size = 1 / window.GLOBAL_cytoscape.zoom();
+                            const size = init_size > 4 ? 4 : init_size;
+                            return "" + size;
+                        },
                     "font-size": function() {
-                            return "" + 1 / window.GLOBAL_cytoscape.zoom() + "em";
+                            const init_size = 1 / window.GLOBAL_cytoscape.zoom();
+                            const size = init_size > 4 ? 4 : init_size;
+                            return "" + size + "em";
                         },
                 }
         }];

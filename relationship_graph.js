@@ -11,6 +11,7 @@ window.GLOBAL_cytoscape = undefined;
 window.GLOBAL_selected_nodes = [];
 window.GLOBAL_selected_edges = [];
 window.GLOBALS_default_node_color = "blue";
+window.GLOBALS_default_edge_line_color = "black";
 window.GLOBALS_selected_node_color = "red";
 window.GLOBALS_selected_link_color = "red";
 
@@ -605,7 +606,7 @@ function build_cy_edge(edge_data) {
             "source": edge_data["source"],
             "target": edge_data["target"],
             "label": build_edge_cy_label(edge_data),
-            "line-color": "black"
+            "line_color": build_edge_cy_line_color(edge_data),
         };
     var cy_edge = {
             "group": "edges",
@@ -623,19 +624,39 @@ function build_node_cy_label(node_data) {
 }
 
 function build_edge_cy_label(edge_data) {
+    const graph_schema = get_graph_schema();
+    const edge_type_entry = graph_schema["edge_types"][edge_data["type"]];
+    if( edge_type_entry ) {
+        const sch_label = edge_type_entry["label"];
+        if( sch_label ) {
+            return sch_label;
+        }
+    }
     return edge_data["type"];
 }
 
 function build_node_cy_color(node_data) {
     const graph_schema = get_graph_schema();
-    var node_type_entry = graph_schema["node_types"][node_data["type"]];
+    const node_type_entry = graph_schema["node_types"][node_data["type"]];
     if( node_type_entry ) {
-        var sch_color = node_type_entry["color"];
+        const sch_color = node_type_entry["color"];
         if( sch_color ) {
             return sch_color;
         }
     }
     return window.GLOBALS_default_node_color;
+}
+
+function build_edge_cy_line_color(edge_data) {
+    const graph_schema = get_graph_schema();
+    const edge_type_entry = graph_schema["edge_types"][edge_data["type"]];
+    if( edge_type_entry ) {
+        const sch_color = edge_type_entry["line-color"];
+        if( sch_color ) {
+            return sch_color;
+        }
+    }
+    return window.GLOBALS_default_edge_line_color;
 }
 
 function get_cy_style() {
@@ -683,7 +704,7 @@ function get_cy_style() {
                     "curve-style": "straight",
                     "target-arrow-shape": "triangle",
                     "compound-sizing-wrt-labels": "include",
-                    "line-color": "data(line-color)",
+                    "line-color": "data(line_color)",
                     "color": "black",
                     "text-outline-color": "white",
                     "text-outline-opacity": ".5",

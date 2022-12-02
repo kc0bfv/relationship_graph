@@ -30,7 +30,6 @@ schema_object := {"node_types": node_types_object, "node_fields": node_fields_ob
 node_types_object := {node_type_name: node_type_object, ...}
 node_type_name : A string, any valid JSON key values permitted, that becomes a possible value for node types.
 node_type_object := {"color": color_value}
-color_value : A string describing any valid javascript color.  This will be the color of any nodes for the corresponding type.
 
 node_fields_object := {node_field_name: node_field_object, ...}
 node_field_name : A string, no spaces permitted and alpha-numeric ascii characters preferred, that becomes the name used to store and reference a new field of data storage for each node
@@ -40,8 +39,11 @@ nice_name : A string, any valid JSON string permitted, that is the name of the f
 
 edge_types_object := {edge_type_name: edge_type_object, ...}
 edge_type_name := A string, any valid JSON key values permitted, that becomes a possible value for edge types.
-edge_type_object := {}
+edge_type_object := {"line-color": color_value, "label": edge_type_label}
+edge_type_label := A string, the label to display on an edge.  Defaults to the type name if not specified.
 
+
+color_value : A string describing any valid javascript color.  This will be the color of any item for the corresponding type.
 root_ids_list := A list of the id numbers of nodes to use as the hierarchical root when no other root is selected.
 ```
 

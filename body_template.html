@@ -1,5 +1,3 @@
-        </style>
-    </head>
     <body onload="err_wrap(after_load)">
     <div id="main-body">
     <div id="header">
@@ -87,4 +85,15 @@
         <div id="json_vis_area" class="subsection">
             <div id="json_output" class="subsection">
                 <label for="json_out_area">JSON:</label>
-                <textarea id="json_out_area" rows="20">
+                <textarea id="json_out_area" rows="20">${JSON_OUT_AREA}</textarea>
+            </div>
+            <div id="json_controls" class="subsection">
+                <input type="button" value="Build JSON" onclick="err_wrap(build_json)">
+                <input type="button" value="Ingest JSON" onclick="err_wrap(ingest_json)">
+            </div>
+        </div>
+        </details>
+    </div>
+    </div>
+    </div>
+    </body>

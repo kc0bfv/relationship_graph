@@ -1,6 +1,8 @@
 <!doctype html>
 <html>
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAYVpQ0NQSUNDIHByb2ZpbGUAACiRfZE7SMNAHMa/PqQiFQULijhkqE4WfCGOWoUiVAi1QqsOJpe+oElDkuLiKLgWHHwsVh1cnHV1cBUEwQeIk6OToouU+L+k0CLGO4778d3/+7j7H+Cvl5lqBscAVbOMVCIuZLKrQugVQfTS7Me4xEx9ThST8Bxf9/Dx/S7Gs7zr/hzdSs5kgE8gnmW6YRFvEE9vWjrnfeIIK0oK8TnxqEEXJH7kuuzyG+eCw36eGTHSqXniCLFQaGO5jVnRUImniKOKqlG+P+OywnmLs1qusuY9+QvDOW1lmeu0hpDAIpYgQoCMKkoow0KMdo0UEyk6j3v4Bx2/SC6ZXCUwciygAhWS4wf/g9+9NfOTE25SOA50vNj2xzAQ2gUaNdv+PrbtxgkQeAautJa/UgdmPkmvtbToEdCzDVxctzR5D7jcAQaedMmQHClAy5/PA+9n9E1ZoO8W6Fpz+9Y8x+kDkKZeJW+Ag0NgpEDZ6x7v7mzv2781zf79AHfJcqltsBruAAAABmJLR0QAIgAiACKs6xRxAAAACXBIWXMAAC4jAAAuIwF4pT92AAACFklEQVRYw9WX30tTYRjHP2fOUe0IjkptHed2JKJSceuoUdhFEUIXddOIoJvd9DeFEKObCuyqi8Hox0ALJAYSmCIxtDWkNUXbzpotR91Y7MSpbe/O8dRz97488H447/P9nu8rqaqqACGcqVX33uFxQN7nw3Ug5t5byECvE5/AbbY5dfkkA4Eedms1OlwSxVKFRHKRkl61H+DG9VGq33aZjs/92tPCCrei40zHX1oO4Kpf+Pu68MoHeJJYNDSlF3J8yG1y6eIJewHOnPKztlYwbXw1nyEQOGIvgBNlAHi7vE4weNS08cK5QQ4d9HD8WJd9AOsfS5T1Ha5dHTI0aWGFfuUwqdklpq4Mc/vmOL09XksAJFVVJ4GZeh9oJMPh031MjA1SLn/laWqJjc0vImfngagpQLMVHvEzdlZla7vMs9QyW9s7rfhI+wD1V6RFQnwqFOns7KBSqRqkrIUVIqPB330kD0QtUUF6Icfde3MUixW83tZ8xFIZSpJEJpNvyUf+LR9otxr5SDa7YS9AIx95Mfuuud9xW3PgkvB1y9yJTRpk+HDmdfN5QLTOTwTxeNzcfzC//zMQGvAxMtTPo8fp9hNRozJzOl+3TCL5hlrtu70Af0pMWkQmm/tsrwz/lpjeZwtCiaklADsS0//lhCJOZymAiNMJJSIRGQo8XPJAVMgHks9XgBVLX0a6A/On/wRYBWJOPc9/AMY28XunSezbAAAAAElFTkSuQmCC">
 <script>
 /**
@@ -42,6 +44,8 @@ const cytoscape_div_id = "cytoscape_area";
 const json_out_area_id = "json_out_area";
 const LINK_TYPE_SEL = "link_type_select";
 const project_name_elem_id = "project_name";
+const pop_up = "pop_up";
+const node_data_display = "node_data_display";
 
 // Globals
 window.GLOBAL_graph_schema = {};
@@ -356,7 +360,9 @@ function cy_node_doubleclick(in_event) {
 }
 function cy_node_select(in_event) {
     window.GLOBAL_selected_nodes.push(in_event.target.id());
+    display_node_data(in_event.target.data());
     // TODO make sure this data structure isn't out of sync with cytoscape
+
 }
 function cy_node_unselect(in_event) {
     var loc = window.GLOBAL_selected_nodes.indexOf(in_event.target.id());
@@ -364,6 +370,7 @@ function cy_node_unselect(in_event) {
         return;
     }
     window.GLOBAL_selected_nodes.splice(loc, 1);
+    clear_node_data();
     // TODO make sure this data structure isn't out of sync with cytoscape
     if( window.GLOBAL_cytoscape.$(":selected").length == 0 ) {
         // Just make sure the data structures are cleared out when
@@ -374,6 +381,31 @@ function cy_node_unselect(in_event) {
 }
 function zoom_handler(in_event) {
     window.GLOBAL_cytoscape.style().update();
+}
+
+function display_node_data(data) {
+    const graph_schema = get_graph_schema();
+    const elem = document.getElementById(node_data_display);
+
+    let output_notes = "";
+
+    Object.keys(graph_schema["node_fields"]).forEach(
+        function (key) {
+            let name = key;
+            if( graph_schema["node_fields"][key]["nice_name"] ) {
+                name = graph_schema["node_fields"][key]["nice_name"];
+            }
+            if( data[key] ) {
+                output_notes += `<div>${name}: ${data[key]}</div>`;
+            }
+        }
+    )
+
+    elem.innerHTML = `<div id="node_disp_label">${data.label}</div><div id="node_disp_type">${data.type}</div><div id="node_disp_data">${output_notes}</div>`;
+}
+function clear_node_data() {
+    const elem = document.getElementById(node_data_display);
+    elem.innerHTML = "";
 }
 
 function get_selected_edges() {
@@ -836,6 +868,7 @@ h1, h2, h3, h4, h5, h6 {
 #header details {
     margin: 10px 10px;
 }
+
 #header h1 {
     color: #424242;
     font-size: 2em;
@@ -843,6 +876,22 @@ h1, h2, h3, h4, h5, h6 {
     padding: .25em;
     float: right;
 }
+
+@media screen and (max-width: 700px) {
+    #header h1 {
+        font-size: 1em;
+        margin: 0;
+    }
+    #header #json_save_area {
+        margin: 0;
+        padding: 0;
+    }
+    #header .clear-div {
+        margin: 0;
+        padding: 0;
+    }
+}
+
 #header {
     flex-shrink: 0;
     padding: 0 20px;
@@ -885,8 +934,24 @@ textarea {
 body.display_only .section, body.display_only .subsection, body.display_only #header, body.display_only #graph_area_header {
     display: none;
 }
-body.display_only #cytoscape_surround, body.display_only #cytoscape_area {
+body.display_only #cytoscape_surround, body.display_only #cytoscape_area, body.display_only #node_data_display, body.display_only #cytoscape_view_controls {
     display: block;
+}
+
+#node_data_display {
+    height: 5em;
+    border: solid #c3c5c4 1px;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+#node_disp_label {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+#node_disp_type {
+    text-align: center;
+    font-weight: bold;
 }
 </style>
 </head>
@@ -945,13 +1010,15 @@ body.display_only #cytoscape_surround, body.display_only #cytoscape_area {
         <h2 id="graph_area_header">Graph Area</h2>
         <div id="cytoscape_area" class="section">
         </div>
+        <div id="node_data_display" class="subsection">
+        </div>
         <div id="cytoscape_view_controls" class="subsection">
             <input type="button" value="Heirarchical View" onclick="err_wrap(set_hierarchical)">
             <input type="button" value="Elastic Spring View" onclick="err_wrap(set_elastic_spring)">
             <input type="button" value="Fit View" onclick="err_wrap(set_fit_view)">
             <input type="button" value="Export to PNG" onclick="err_wrap(export_to_png)">
             <input type="button" value="Toggle Additive Selection" onclick="err_wrap(toggle_additive)">
-            </div>
+        </div>
         <div id="cytoscape_edit_controls" class="subsection">
             <input type="button" value="Delete Selected" onclick="err_wrap(delete_selected)">
             <input type="button" value="Edit Node" onclick="err_wrap(edit_node)">
@@ -1030,7 +1097,7 @@ body.display_only #cytoscape_surround, body.display_only #cytoscape_area {
       "id": "1",
       "label": "Sub Team 1",
       "type": "INL Team",
-      "notes": "",
+      "notes": "This is the main sub team within INL.  Many sub teams look to sub team one for inspiration and direction.  They are often found providing it from horseback, as is their wont.  The purpose of this notes field is to be very long.  Long enough that scrolling is triggered in one field or another.  Make the field scroll, see how it performs.  That's what we're looking for here.",
       "renderedPosition": {
         "x": 591.0457592883611,
         "y": 159.66376327699697

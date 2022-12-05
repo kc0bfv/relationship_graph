@@ -1,0 +1,245 @@
+{
+  "schema": {
+    "node_types": {
+      "Certification Type": {
+        "color": "#39192C"
+      },
+      "Required Online Course": {
+        "color": "#B5A96C"
+      },
+      "Required In-person Course": {
+        "color": "#806E17"
+      },
+      "Completed Course": {
+        "color": "#8D3E6D"
+      }
+    },
+    "node_fields": {
+      "notes": {
+        "size": "textarea",
+        "nice_name": "Notes"
+      }
+    },
+    "edge_types": {
+      "Requires": {},
+      "Prerequisite": {}
+    },
+    "default_root_ids": [
+      0
+    ]
+  },
+  "nodes": [
+    {
+      "id": 0,
+      "label": "S&amp;TM Level 1",
+      "type": "Certification Type",
+      "notes": ""
+    },
+    {
+      "id": "1",
+      "label": "ACQ 101",
+      "type": "Completed Course",
+      "notes": "Fundamentals of Systems Acquisition Management"
+    },
+    {
+      "id": "2",
+      "label": "ENG 101",
+      "type": "Completed Course",
+      "notes": "Fundamentals of Systems Engineering"
+    },
+    {
+      "id": "3",
+      "label": "CLE 068",
+      "type": "Completed Course",
+      "notes": "Intellectual Property and Data Rights"
+    },
+    {
+      "id": "4",
+      "label": "STM 101",
+      "type": "Completed Course",
+      "notes": "Introduction to Science and Technology Management"
+    },
+    {
+      "id": 9,
+      "label": "S&amp;TM Level 2",
+      "type": "Certification Type",
+      "notes": ""
+    },
+    {
+      "id": "11",
+      "label": "ACQ 202",
+      "type": "Completed Course",
+      "notes": "Intermediate Systems Acquisition, Part A"
+    },
+    {
+      "id": "12",
+      "label": "CLE 021",
+      "type": "Required Online Course",
+      "notes": "Technology Readiness Assessments"
+    },
+    {
+      "id": "13",
+      "label": "STM 0010",
+      "type": "Completed Course",
+      "notes": "Prototyping and Experimentation"
+    },
+    {
+      "id": "14",
+      "label": "STM 204",
+      "type": "Required In-person Course",
+      "notes": "Intermediate Science and Technology Management (R)"
+    },
+    {
+      "id": 19,
+      "label": "S&amp;TM Level 3",
+      "type": "Certification Type",
+      "notes": ""
+    },
+    {
+      "id": "20",
+      "label": "CLM 014",
+      "type": "Required Online Course",
+      "notes": "Team Management and Leadership"
+    },
+    {
+      "id": "21",
+      "label": "CLE 069",
+      "type": "Required Online Course",
+      "notes": "Technology Transfer"
+    },
+    {
+      "id": "22",
+      "label": "STM 304",
+      "type": "Required In-person Course",
+      "notes": "Leadership in Science and Technology Management (R)"
+    },
+    {
+      "id": 28,
+      "label": "CLE 021",
+      "type": "Required Online Course",
+      "notes": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": 5,
+      "source": "0",
+      "target": "1",
+      "type": "Requires"
+    },
+    {
+      "id": 6,
+      "source": "0",
+      "target": "4",
+      "type": "Requires"
+    },
+    {
+      "id": 7,
+      "source": "0",
+      "target": "3",
+      "type": "Requires"
+    },
+    {
+      "id": 8,
+      "source": "0",
+      "target": "2",
+      "type": "Requires"
+    },
+    {
+      "id": 10,
+      "source": "9",
+      "target": "0",
+      "type": "Prerequisite"
+    },
+    {
+      "id": 15,
+      "source": "9",
+      "target": "13",
+      "type": "Requires"
+    },
+    {
+      "id": 16,
+      "source": "9",
+      "target": "12",
+      "type": "Requires"
+    },
+    {
+      "id": 17,
+      "source": "9",
+      "target": "14",
+      "type": "Requires"
+    },
+    {
+      "id": 18,
+      "source": "9",
+      "target": "11",
+      "type": "Requires"
+    },
+    {
+      "id": 23,
+      "source": "19",
+      "target": "20",
+      "type": "Requires"
+    },
+    {
+      "id": 24,
+      "source": "19",
+      "target": "22",
+      "type": "Requires"
+    },
+    {
+      "id": 25,
+      "source": "19",
+      "target": "21",
+      "type": "Requires"
+    },
+    {
+      "id": 26,
+      "source": "19",
+      "target": "9",
+      "type": "Prerequisite"
+    },
+    {
+      "id": 27,
+      "source": "14",
+      "target": "11",
+      "type": "Prerequisite"
+    },
+    {
+      "id": 29,
+      "source": "14",
+      "target": "28",
+      "type": "Prerequisite"
+    },
+    {
+      "id": 30,
+      "source": "14",
+      "target": "3",
+      "type": "Prerequisite"
+    },
+    {
+      "id": 31,
+      "source": "14",
+      "target": "2",
+      "type": "Prerequisite"
+    },
+    {
+      "id": 32,
+      "source": "14",
+      "target": "4",
+      "type": "Prerequisite"
+    },
+    {
+      "id": 33,
+      "source": "22",
+      "target": "14",
+      "type": "Prerequisite"
+    },
+    {
+      "id": 34,
+      "source": "22",
+      "target": "20",
+      "type": "Prerequisite"
+    }
+  ]
+}

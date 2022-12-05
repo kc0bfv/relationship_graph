@@ -51,7 +51,7 @@
       "id": "1",
       "label": "Sub Team 1",
       "type": "INL Team",
-      "notes": "",
+      "notes": "This is the main sub team within INL.  Many sub teams look to sub team one for inspiration and direction.  They are often found providing it from horseback, as is their wont.  The purpose of this notes field is to be very long.  Long enough that scrolling is triggered in one field or another.  Make the field scroll, see how it performs.  That's what we're looking for here.",
       "renderedPosition": {
         "x": 591.0457592883611,
         "y": 159.66376327699697

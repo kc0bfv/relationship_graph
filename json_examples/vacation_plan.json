@@ -1,0 +1,334 @@
+{
+  "schema": {
+    "node_types": {
+      "Transport Option": {
+        "color": "navy"
+      },
+      "Destination": {
+        "color": "purple"
+      },
+      "Activities": {
+        "color": "yellow"
+      },
+      "Pros": {
+        "color": "green"
+      },
+      "Cons": {
+        "color": "maroon"
+      },
+      "Starting Location": {
+        "color": "lime"
+      }
+    },
+    "node_fields": {
+      "notes": {
+        "size": "textarea",
+        "nice_name": "Notes"
+      }
+    },
+    "edge_types": {
+      "": {}
+    },
+    "default_root_ids": [
+      0
+    ]
+  },
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Home",
+      "type": "Starting Location",
+      "notes": ""
+    },
+    {
+      "id": 1,
+      "label": "Fly from SLC",
+      "type": "Transport Option",
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "label": "Fly from BOI",
+      "type": "Transport Option",
+      "notes": ""
+    },
+    {
+      "id": 5,
+      "label": "Seattle",
+      "type": "Destination",
+      "notes": ""
+    },
+    {
+      "id": 6,
+      "label": "DC",
+      "type": "Destination",
+      "notes": ""
+    },
+    {
+      "id": 7,
+      "label": "Minneapolis",
+      "type": "Destination",
+      "notes": ""
+    },
+    {
+      "id": 11,
+      "label": "Train to Vancouver",
+      "type": "Transport Option",
+      "notes": ""
+    },
+    {
+      "id": "12",
+      "label": "Ferry to Victoria",
+      "type": "Transport Option",
+      "notes": ""
+    },
+    {
+      "id": 13,
+      "label": "Vancouver",
+      "type": "Destination",
+      "notes": ""
+    },
+    {
+      "id": 14,
+      "label": "Victoria",
+      "type": "Destination",
+      "notes": ""
+    },
+    {
+      "id": 20,
+      "label": "Currently the off season",
+      "type": "Pros",
+      "notes": ""
+    },
+    {
+      "id": 22,
+      "label": "Christmas Market",
+      "type": "Activities",
+      "notes": ""
+    },
+    {
+      "id": 24,
+      "label": "Capilano Suspension Bridge",
+      "type": "Activities",
+      "notes": ""
+    },
+    {
+      "id": 26,
+      "label": "See friends!",
+      "type": "Pros",
+      "notes": ""
+    },
+    {
+      "id": 28,
+      "label": "Already been there a lot...",
+      "type": "Cons",
+      "notes": ""
+    },
+    {
+      "id": 30,
+      "label": "Isn't it cold there?",
+      "type": "Cons",
+      "notes": ""
+    },
+    {
+      "id": "32",
+      "label": "Never been here",
+      "type": "Pros",
+      "notes": ""
+    },
+    {
+      "id": 37,
+      "label": "BC Museum and Capital",
+      "type": "Activities",
+      "notes": ""
+    },
+    {
+      "id": 39,
+      "label": "Oldest Chinatown in Canada?",
+      "type": "Activities",
+      "notes": ""
+    },
+    {
+      "id": "41",
+      "label": "Rain",
+      "type": "Pros",
+      "notes": "It's kinda nice for a short period"
+    },
+    {
+      "id": 45,
+      "label": "Great Food",
+      "type": "Activities",
+      "notes": ""
+    }
+  ],
+  "edges": [
+    {
+      "id": 3,
+      "source": "0",
+      "target": "1",
+      "type": ""
+    },
+    {
+      "id": 4,
+      "source": "0",
+      "target": "2",
+      "type": ""
+    },
+    {
+      "id": 8,
+      "source": "1",
+      "target": "6",
+      "type": ""
+    },
+    {
+      "id": 9,
+      "source": "1",
+      "target": "7",
+      "type": ""
+    },
+    {
+      "id": 10,
+      "source": "2",
+      "target": "5",
+      "type": ""
+    },
+    {
+      "id": 15,
+      "source": "5",
+      "target": "12",
+      "type": ""
+    },
+    {
+      "id": 16,
+      "source": "13",
+      "target": "12",
+      "type": ""
+    },
+    {
+      "id": 17,
+      "source": "5",
+      "target": "11",
+      "type": ""
+    },
+    {
+      "id": 18,
+      "source": "12",
+      "target": "14",
+      "type": ""
+    },
+    {
+      "id": 19,
+      "source": "11",
+      "target": "13",
+      "type": ""
+    },
+    {
+      "id": 21,
+      "source": "14",
+      "target": "20",
+      "type": ""
+    },
+    {
+      "id": 23,
+      "source": "13",
+      "target": "22",
+      "type": ""
+    },
+    {
+      "id": 25,
+      "source": "13",
+      "target": "24",
+      "type": ""
+    },
+    {
+      "id": 27,
+      "source": "6",
+      "target": "26",
+      "type": ""
+    },
+    {
+      "id": 29,
+      "source": "6",
+      "target": "28",
+      "type": ""
+    },
+    {
+      "id": 31,
+      "source": "7",
+      "target": "30",
+      "type": ""
+    },
+    {
+      "id": 33,
+      "source": "14",
+      "target": "32",
+      "type": ""
+    },
+    {
+      "id": 34,
+      "source": "13",
+      "target": "32",
+      "type": ""
+    },
+    {
+      "id": 35,
+      "source": "7",
+      "target": "32",
+      "type": ""
+    },
+    {
+      "id": 36,
+      "source": "5",
+      "target": "32",
+      "type": ""
+    },
+    {
+      "id": 38,
+      "source": "14",
+      "target": "37",
+      "type": ""
+    },
+    {
+      "id": 40,
+      "source": "14",
+      "target": "39",
+      "type": ""
+    },
+    {
+      "id": 42,
+      "source": "5",
+      "target": "41",
+      "type": ""
+    },
+    {
+      "id": 43,
+      "source": "13",
+      "target": "41",
+      "type": ""
+    },
+    {
+      "id": 44,
+      "source": "14",
+      "target": "41",
+      "type": ""
+    },
+    {
+      "id": 46,
+      "source": "13",
+      "target": "45",
+      "type": ""
+    },
+    {
+      "id": 47,
+      "source": "5",
+      "target": "45",
+      "type": ""
+    },
+    {
+      "id": 48,
+      "source": "6",
+      "target": "45",
+      "type": ""
+    }
+  ]
+}

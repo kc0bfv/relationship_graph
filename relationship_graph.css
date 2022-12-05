@@ -35,6 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 #header details {
     margin: 10px 10px;
 }
+
 #header h1 {
     color: #424242;
     font-size: 2em;
@@ -42,6 +43,22 @@ h1, h2, h3, h4, h5, h6 {
     padding: .25em;
     float: right;
 }
+
+@media screen and (max-width: 700px) {
+    #header h1 {
+        font-size: 1em;
+        margin: 0;
+    }
+    #header #json_save_area {
+        margin: 0;
+        padding: 0;
+    }
+    #header .clear-div {
+        margin: 0;
+        padding: 0;
+    }
+}
+
 #header {
     flex-shrink: 0;
     padding: 0 20px;
@@ -84,6 +101,22 @@ textarea {
 body.display_only .section, body.display_only .subsection, body.display_only #header, body.display_only #graph_area_header {
     display: none;
 }
-body.display_only #cytoscape_surround, body.display_only #cytoscape_area {
+body.display_only #cytoscape_surround, body.display_only #cytoscape_area, body.display_only #node_data_display, body.display_only #cytoscape_view_controls {
     display: block;
+}
+
+#node_data_display {
+    height: 5em;
+    border: solid #c3c5c4 1px;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+#node_disp_label {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+#node_disp_type {
+    text-align: center;
+    font-weight: bold;
 }

@@ -4,6 +4,8 @@ const cytoscape_div_id = "cytoscape_area";
 const json_out_area_id = "json_out_area";
 const LINK_TYPE_SEL = "link_type_select";
 const project_name_elem_id = "project_name";
+const pop_up = "pop_up";
+const node_data_display = "node_data_display";
 
 // Globals
 window.GLOBAL_graph_schema = {};
@@ -318,7 +320,9 @@ function cy_node_doubleclick(in_event) {
 }
 function cy_node_select(in_event) {
     window.GLOBAL_selected_nodes.push(in_event.target.id());
+    display_node_data(in_event.target.data());
     // TODO make sure this data structure isn't out of sync with cytoscape
+
 }
 function cy_node_unselect(in_event) {
     var loc = window.GLOBAL_selected_nodes.indexOf(in_event.target.id());
@@ -326,6 +330,7 @@ function cy_node_unselect(in_event) {
         return;
     }
     window.GLOBAL_selected_nodes.splice(loc, 1);
+    clear_node_data();
     // TODO make sure this data structure isn't out of sync with cytoscape
     if( window.GLOBAL_cytoscape.$(":selected").length == 0 ) {
         // Just make sure the data structures are cleared out when
@@ -336,6 +341,31 @@ function cy_node_unselect(in_event) {
 }
 function zoom_handler(in_event) {
     window.GLOBAL_cytoscape.style().update();
+}
+
+function display_node_data(data) {
+    const graph_schema = get_graph_schema();
+    const elem = document.getElementById(node_data_display);
+
+    let output_notes = "";
+
+    Object.keys(graph_schema["node_fields"]).forEach(
+        function (key) {
+            let name = key;
+            if( graph_schema["node_fields"][key]["nice_name"] ) {
+                name = graph_schema["node_fields"][key]["nice_name"];
+            }
+            if( data[key] ) {
+                output_notes += `<div>${name}: ${data[key]}</div>`;
+            }
+        }
+    )
+
+    elem.innerHTML = `<div id="node_disp_label">${data.label}</div><div id="node_disp_type">${data.type}</div><div id="node_disp_data">${output_notes}</div>`;
+}
+function clear_node_data() {
+    const elem = document.getElementById(node_data_display);
+    elem.innerHTML = "";
 }
 
 function get_selected_edges() {

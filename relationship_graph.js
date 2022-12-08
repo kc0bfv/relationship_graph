@@ -658,7 +658,7 @@ function build_edge_cy_label(edge_data) {
     const edge_type_entry = graph_schema["edge_types"][edge_data["type"]];
     if( edge_type_entry ) {
         const sch_label = edge_type_entry["label"];
-        if( sch_label ) {
+        if( sch_label !== undefined ) {
             return sch_label;
         }
     }

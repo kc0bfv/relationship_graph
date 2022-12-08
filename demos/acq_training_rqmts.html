@@ -396,7 +396,7 @@ function display_node_data(data) {
                 name = graph_schema["node_fields"][key]["nice_name"];
             }
             if( data[key] ) {
-                output_notes += `<div>${name}: ${data[key]}</div>`;
+                output_notes += `<pre>${name}: ${data[key]}</pre>`;
             }
         }
     )
@@ -698,7 +698,7 @@ function build_edge_cy_label(edge_data) {
     const edge_type_entry = graph_schema["edge_types"][edge_data["type"]];
     if( edge_type_entry ) {
         const sch_label = edge_type_entry["label"];
-        if( sch_label ) {
+        if( sch_label !== undefined ) {
             return sch_label;
         }
     }

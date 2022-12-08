@@ -356,7 +356,7 @@ function display_node_data(data) {
                 name = graph_schema["node_fields"][key]["nice_name"];
             }
             if( data[key] ) {
-                output_notes += `<div>${name}: ${data[key]}</div>`;
+                output_notes += `<pre>${name}: ${data[key]}</pre>`;
             }
         }
     )
